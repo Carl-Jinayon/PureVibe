@@ -1,0 +1,170 @@
+@extends('layouts.admin')
+
+@section('title', 'System Settings')
+
+@section('content')
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">System Settings</h2>
+    <button type="submit" form="settingsForm" class="btn btn-gradient rounded-pill px-4 shadow-sm">
+        <i class="bi bi-save me-2"></i> Save Changes
+    </button>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-3 d-none d-lg-block">
+        <div class="glass-card p-0 sticky-top" style="top: 100px;">
+            <div class="list-group list-group-flush rounded-3">
+                <a href="#store-info" class="list-group-item list-group-item-action bg-transparent border-bottom-0 py-3 active fw-semibold" style="color: var(--primary-color);">
+                    <i class="bi bi-shop me-2"></i> Store Information
+                </a>
+                <a href="#tax-config" class="list-group-item list-group-item-action bg-transparent border-bottom-0 py-3 text-muted">
+                    <i class="bi bi-calculator me-2"></i> Tax Configuration
+                </a>
+                <a href="#receipt-settings" class="list-group-item list-group-item-action bg-transparent border-bottom-0 py-3 text-muted">
+                    <i class="bi bi-receipt me-2"></i> Receipt Settings
+                </a>
+                <a href="#system-settings" class="list-group-item list-group-item-action bg-transparent py-3 text-muted">
+                    <i class="bi bi-pc-display me-2"></i> Terminal Settings
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+        <form id="settingsForm" action="{{ route('admin.settings.store') }}" method="POST">
+            @csrf
+            
+            <!-- Store Info -->
+            <div id="store-info" class="glass-card p-4 mb-4">
+                <h5 class="fw-bold mb-4 border-bottom pb-2">Store Information</h5>
+                
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label class="form-label fw-semibold">Store Name</label>
+                        <input type="text" name="store_name" class="form-control form-control-custom" value="{{ $settings['store_name'] ?? 'PureVibe Kiosk' }}">
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Contact Email</label>
+                        <input type="email" name="contact_email" class="form-control form-control-custom" value="{{ $settings['contact_email'] ?? 'support@purevibe.com' }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Contact Phone</label>
+                        <input type="text" name="contact_phone" class="form-control form-control-custom" value="{{ $settings['contact_phone'] ?? '(555) 123-4567' }}">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Store Address</label>
+                    <textarea name="store_address" class="form-control form-control-custom" rows="3">{{ $settings['store_address'] ?? '123 Grocery Lane&#10;Market District' }}</textarea>
+                </div>
+            </div>
+
+            <!-- Tax Config -->
+            <div id="tax-config" class="glass-card p-4 mb-4">
+                <h5 class="fw-bold mb-4 border-bottom pb-2">Tax Configuration</h5>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Default Tax Rate (%)</label>
+                        <div class="input-group">
+                            <input type="number" step="0.01" name="default_tax_rate" class="form-control form-control-custom" value="{{ $settings['default_tax_rate'] ?? '12' }}">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end pb-2">
+                        <div class="form-check form-switch fs-5">
+                            <input name="prices_include_tax" value="1" class="form-check-input" type="checkbox" role="switch" {{ isset($settings['prices_include_tax']) && $settings['prices_include_tax'] ? 'checked' : '' }}>
+                            <label class="form-check-label fs-6 mt-1 ms-2">Prices include tax</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Tax Name</label>
+                    <input type="text" name="tax_name" class="form-control form-control-custom" value="{{ $settings['tax_name'] ?? 'VAT' }}">
+                    <small class="text-muted">This name will appear on the customer's receipt.</small>
+                </div>
+            </div>
+
+            <!-- Receipt Settings -->
+            <div id="receipt-settings" class="glass-card p-4 mb-4">
+                <h5 class="fw-bold mb-4 border-bottom pb-2">Receipt Settings</h5>
+                
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Receipt Header Message</label>
+                    <textarea name="receipt_header" class="form-control form-control-custom" rows="2">{{ $settings['receipt_header'] ?? 'Welcome to PureVibe!' }}</textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Receipt Footer Message</label>
+                    <textarea name="receipt_footer" class="form-control form-control-custom" rows="2">{{ $settings['receipt_footer'] ?? 'Thank you for shopping with us!&#10;Please come again.' }}</textarea>
+                </div>
+            </div>
+
+            <!-- System Settings -->
+            <div id="system-settings" class="glass-card p-4 mb-4">
+                <h5 class="fw-bold mb-4 border-bottom pb-2">Terminal Settings</h5>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Idle Timeout (seconds)</label>
+                        <input type="number" name="idle_timeout" class="form-control form-control-custom" value="{{ $settings['idle_timeout'] ?? '120' }}">
+                        <small class="text-muted">Return to welcome screen after inactivity.</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Currency Symbol</label>
+                        <input type="text" name="currency_symbol" class="form-control form-control-custom" value="{{ $settings['currency_symbol'] ?? '₱' }}">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="form-check form-switch fs-5 mb-3">
+                        <input name="enable_sound" value="1" class="form-check-input" type="checkbox" role="switch" {{ isset($settings['enable_sound']) && $settings['enable_sound'] ? 'checked' : (!isset($settings['enable_sound']) ? 'checked' : '') }}>
+                        <label class="form-check-label fs-6 mt-1 ms-2">Enable Sound Effects</label>
+                    </div>
+                    <div class="form-check form-switch fs-5">
+                        <input name="allow_guest" value="1" class="form-check-input" type="checkbox" role="switch" {{ isset($settings['allow_guest']) && $settings['allow_guest'] ? 'checked' : (!isset($settings['allow_guest']) ? 'checked' : '') }}>
+                        <label class="form-check-label fs-6 mt-1 ms-2">Allow Guest Checkout</label>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    // Simple script to highlight active section on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        const links = document.querySelectorAll('.list-group-item');
+        
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                links.forEach(l => {
+                    l.classList.remove('active', 'fw-semibold');
+                    l.classList.add('text-muted');
+                    l.style.color = '';
+                });
+                
+                this.classList.add('active', 'fw-semibold');
+                this.classList.remove('text-muted');
+                this.style.color = 'var(--primary-color)';
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    });
+</script>
+@endsection
