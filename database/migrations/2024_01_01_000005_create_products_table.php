@@ -18,9 +18,9 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->nullOnDelete();
             $table->string('image')->nullable();
-            $table->string('sku')->unique();
-            $table->string('barcode')->unique()->nullable();
-            $table->decimal('unit_price', 10, 2);
+            $table->string('sku');
+            $table->string('barcode')->nullable();
+            $table->decimal('unit_price', 10, 2)->nullable();
             $table->integer('current_stock')->default(0);
             $table->integer('low_stock_threshold')->default(10);
             $table->string('unit')->default('piece');

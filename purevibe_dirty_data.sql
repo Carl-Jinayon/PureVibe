@@ -11,14 +11,15 @@ SET sql_mode = '';
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. Wipe existing data
-TRUNCATE TABLE transaction_items;
-TRUNCATE TABLE transactions;
-TRUNCATE TABLE inventory_movements;
-TRUNCATE TABLE stock_entries;
-TRUNCATE TABLE supplier_product_prices;
-TRUNCATE TABLE products;
-TRUNCATE TABLE suppliers;
-TRUNCATE TABLE categories;
+DELETE FROM transaction_items;
+DELETE FROM transactions;
+DELETE FROM inventory_movements;
+DELETE FROM stock_entries;
+DELETE FROM supplier_product_prices;
+DELETE FROM products;
+DELETE FROM suppliers;
+DELETE FROM categories;
+
 
 -- =========================================================================
 -- 2. INSERT CATEGORIES (10 Records)
@@ -175,6 +176,35 @@ INSERT INTO transaction_items (id, transaction_id, product_id, product_name, qua
 (18, 11, 6, 'Banana', 3, 15.00, 45.00, NOW(), NOW()),
 (19, 12, 35, 'Highlighter', 1, 35.00, 35.00, NOW(), NOW()),
 (20, 13, 36, 'Paper Clips', 1, 25.00, 25.00, NOW(), NOW());
+
+-- Restore/ensure default roles exist so admin/manager/auditor can login
+INSERT IGNORE INTO `roles` (`id`, `name`, `display_name`, `description`, `created_at`, `updated_at`) VALUES 
+(1,'admin','Admin','Full system access with all privileges','2026-06-10 04:59:54','2026-06-10 04:59:54'),
+(2,'inventory_manager','Inventory Manager','Manage products, categories, suppliers, and inventory','2026-06-10 04:59:54','2026-06-10 04:59:54'),
+(3,'auditor','Auditor','Read-only access to view reports and logs','2026-06-10 04:59:54','2026-06-10 04:59:54');
+
+-- Restore/ensure default users exist
+INSERT IGNORE INTO `users` (`id`, `name`, `email`, `username`, `password`, `role_id`, `avatar`, `is_active`, `last_login_at`, `remember_token`, `created_at`, `updated_at`) VALUES 
+(1,'System Administrator','admin@grocery.com','admin','$2y$12$dTeyWKdSTjjf5wesFR2f7.VDsLiSfTNFEEFa/NILm8gwRGUCNi7fW',1,NULL,1,'2026-06-11 05:06:28',NULL,'2026-06-10 04:59:55','2026-06-11 06:39:17'),
+(2,'Inventory Manager','manager@grocery.com','manager','$2y$12$wLGREiSEMLCbZcIdJYRME.HNyOSx7EVDFqz0EixKXtTUX43pAXVRe',2,NULL,1,'2026-06-11 05:03:14',NULL,'2026-06-10 04:59:55','2026-06-11 06:39:17'),
+(3,'System Auditor','auditor@grocery.com','auditor','$2y$12$VDGDUqf0uDk2DKm4nVKlHOVrynvTLcWhTRSV5pF1qEQYjfQJCgzge',3,NULL,1,'2026-06-11 05:06:02',NULL,'2026-06-10 04:59:56','2026-06-11 06:39:17');
+
+-- Restore/ensure default settings exist
+INSERT IGNORE INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES 
+(1,'store_name','PureVibe Kiosk','2026-06-10 15:41:20','2026-06-10 15:41:20'),
+(2,'contact_email','support@purevibe.com','2026-06-10 15:41:21','2026-06-10 15:41:21'),
+(3,'contact_phone','(555) 123-4567','2026-06-10 15:41:21','2026-06-10 15:41:21'),
+(4,'store_address','123 Grocery Lane\nMarket District','2026-06-10 15:41:21','2026-06-10 15:41:21'),
+(5,'default_tax_rate','13','2026-06-10 15:41:21','2026-06-10 15:41:21'),
+(6,'tax_name','VAT','2026-06-10 15:41:22','2026-06-10 15:41:22'),
+(7,'receipt_header','Welcome to PureVibe!','2026-06-10 15:41:22','2026-06-10 15:41:22'),
+(8,'receipt_footer','Thank you for shopping with us!\nPlease come again.','2026-06-10 15:41:22','2026-06-10 15:41:22'),
+(9,'idle_timeout','120','2026-06-10 15:41:22','2026-06-10 15:41:22'),
+(10,'currency_symbol','₱','2026-06-10 15:41:23','2026-06-10 15:41:23'),
+(11,'enable_sound','1','2026-06-10 15:41:23','2026-06-10 15:41:23'),
+(12,'allow_guest','1','2026-06-10 15:41:23','2026-06-10 15:41:23'),
+(13,'prices_include_tax','1','2026-06-10 15:41:23','2026-06-10 15:41:53'),
+(14,'default_markup_percentage','20','2026-06-11 06:26:43','2026-06-11 06:26:43');
 
 SET FOREIGN_KEY_CHECKS = 1;
 -- Restore strict SQL mode after dirty data import
