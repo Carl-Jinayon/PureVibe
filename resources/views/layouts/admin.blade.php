@@ -371,6 +371,16 @@
                 </ul>
             </li>
 
+            <li class="nav-item mt-3 mb-2">
+                <span class="nav-link text-uppercase fw-bold" style="font-size: 0.75rem; color: #a5b4fc; letter-spacing: 0.05em;">DCIT 55A Project</span>
+            </li>
+            
+            <li class="nav-item">
+                <a href="{{ route('admin.sql-runner.index') }}" class="nav-link {{ request()->routeIs('admin.sql-runner.*') ? 'active' : '' }}" style="border-left-color: #22c55e;">
+                    <i class="bi bi-terminal" style="color: #4ade80;"></i> <span class="d-inline" style="color: #4ade80;">SQL Runner</span>
+                </a>
+            </li>
+
             @if(auth()->check() && (method_exists(auth()->user(), 'isAdmin') ? auth()->user()->isAdmin() : auth()->user()->role === 'admin'))
             <li class="nav-item">
                 <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">

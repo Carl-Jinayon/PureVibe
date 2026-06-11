@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\SqlRunnerController;
 
 // Public kiosk routes (no auth required)
 Route::get('/', [KioskController::class, 'index'])->name('kiosk.index');
@@ -30,6 +31,10 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/live-data', [DashboardController::class, 'liveData'])->name('dashboard.live-data');
+
+    // DCIT 55A SQL Runner
+    Route::get('/sql-runner', [SqlRunnerController::class, 'index'])->name('sql-runner.index');
+    Route::post('/sql-runner/execute', [SqlRunnerController::class, 'execute'])->name('sql-runner.execute');
     
     // Categories
     Route::resource('categories', CategoryController::class);
