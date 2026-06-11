@@ -97,7 +97,7 @@ Below are the structural schemas of our primary tables.
 
 ## Chapter 3: Data Quality Assessment (Phase 2)
 
-Prior to running analytics, we populated the database with a dataset of 60+ products and 15 transactions containing intentional inconsistencies to simulate real-world data problems.
+Prior to running analytics, we populated the database with a dataset of 110+ products and 100+ transactions containing intentional inconsistencies to simulate real-world data problems.
 
 ### 3.1 Documented Issues
 1. **Inconsistent Casing:** The `categories` table contains incorrectly cased names (e.g., "eLeCtrOnIcs", "bEvErAgEs").

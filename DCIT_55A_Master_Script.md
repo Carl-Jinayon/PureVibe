@@ -11,7 +11,7 @@ Before you begin taking screenshots for your documentation or presenting your vi
 **Step 1:** Open phpMyAdmin or your MySQL client.
 **Step 2:** Select your application's database (check your `.env` file — the database name is set as `DB_DATABASE`, e.g., `grocery_self_checkout`).
 **Step 3:** Go to the "Import" tab and upload the `purevibe_dirty_data.sql` file.
-> *Note: This will delete your current data and replace it with 60+ products and 15 transactions containing intentional errors (NULL prices, negative stock, inconsistent category casing, duplicate SKUs).*
+> *Note: This will delete your current data and replace it with 110+ products and 100+ transactions containing intentional errors (NULL prices, negative stock, inconsistent category casing, duplicate SKUs).*
 
 ---
 
