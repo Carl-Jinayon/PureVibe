@@ -20,6 +20,8 @@ class SqlRunnerController extends Controller
         ]);
 
         $query = trim($request->input('query'));
+        // Clean trailing semicolon and any trailing whitespace to prevent syntax errors on sub-queries
+        $query = preg_replace('/;\s*$/', '', $query);
         $lowerQuery = strtolower($query);
 
         try {
@@ -60,12 +62,12 @@ class SqlRunnerController extends Controller
                 if ($isUpdate && isset($matchUpdate[1])) {
                     $tableName = str_replace(['`', "'", '"'], '', $matchUpdate[1]);
                     if (preg_match('/where\s+(.*)$/i', $query, $whereMatch)) {
-                        $whereClause = $whereMatch[1];
+                        $whereClause = trim($whereMatch[1]);
                     }
                 } else if ($isDelete && isset($matchDelete[1])) {
                     $tableName = str_replace(['`', "'", '"'], '', $matchDelete[1]);
                     if (preg_match('/where\s+(.*)$/i', $query, $whereMatch)) {
-                        $whereClause = $whereMatch[1];
+                        $whereClause = trim($whereMatch[1]);
                     }
                 }
 
@@ -92,10 +94,16 @@ class SqlRunnerController extends Controller
                 
                 if ($tableName && $isUpdate) {
                     try {
-                        // Same logic — use WHERE if present, otherwise show all rows (capped at 50)
-                        $selectQuery = $whereClause
-                            ? "SELECT * FROM {$tableName} WHERE {$whereClause} LIMIT 50"
-                            : "SELECT * FROM {$tableName} LIMIT 50";
+                        // Query the exact updated rows using the IDs from beforeResults to show their new values
+                        $ids = array_column($beforeResults, 'id');
+                        if (!empty($ids)) {
+                            $idList = implode(',', array_map('intval', $ids));
+                            $selectQuery = "SELECT * FROM {$tableName} WHERE id IN ({$idList}) LIMIT 50";
+                        } else {
+                            $selectQuery = $whereClause
+                                ? "SELECT * FROM {$tableName} WHERE {$whereClause} LIMIT 50"
+                                : "SELECT * FROM {$tableName} LIMIT 50";
+                        }
 
                         $afterData = DB::select($selectQuery);
                         $afterResults = array_map(function ($item) { return (array) $item; }, $afterData);
@@ -109,7 +117,7 @@ class SqlRunnerController extends Controller
                 return view('admin.sql-runner', [
                     'query' => $query,
                     'successMsg' => "Statement executed successfully. Affected {$affectedRows} row(s).",
-                    'isModification' => true,
+                    'isModification' => ($isUpdate || $isDelete),
                     'isDelete' => $isDelete,
                     'beforeResults' => $beforeResults,
                     'afterResults' => $afterResults,
