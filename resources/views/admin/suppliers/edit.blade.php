@@ -102,7 +102,7 @@
                 {{-- Current Products List --}}
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <h6 class="fw-bold mb-0">Current Products</h6>
-                    <span class="badge bg-primary bg-opacity-15 text-primary border border-primary badge-custom" id="selectedCount">0</span>
+                    <span class="badge bg-primary rounded-pill px-3 py-2" id="selectedCount">0</span>
                 </div>
                 
                 <div class="table-responsive border rounded" style="max-height: 400px; overflow-y: auto;">

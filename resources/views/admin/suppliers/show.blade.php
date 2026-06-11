@@ -148,8 +148,10 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Price History Tab -->
+    <!-- Price History Tab -->
             <div class="tab-pane fade" id="history" role="tabpanel">
                 <div class="glass-card overflow-hidden">
                     <div class="card-header-gradient d-flex justify-content-between align-items-center">
@@ -223,4 +225,42 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Persist tab across page reloads (especially for pagination)
+        const tabKey = 'supplier_active_tab_' + {{ $supplier->id }};
+        
+        // Check if there's a saved tab or if we have a hash in URL
+        let activeTab = sessionStorage.getItem(tabKey);
+        const hash = window.location.hash;
+        
+        if (hash && (hash === '#products' || hash === '#history')) {
+            activeTab = hash;
+        } else if (window.location.search.includes('page=')) {
+            // If paginating, it's the history tab since products aren't paginated here
+            activeTab = '#history';
+        }
+        
+        if (activeTab) {
+            const tabBtn = document.querySelector(`button[data-bs-target="${activeTab}"]`);
+            if (tabBtn) {
+                const tab = new bootstrap.Tab(tabBtn);
+                tab.show();
+            }
+        }
+        
+        // Save tab on click
+        const tabBtns = document.querySelectorAll('button[data-bs-toggle="tab"]');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('shown.bs.tab', function(e) {
+                sessionStorage.setItem(tabKey, e.target.getAttribute('data-bs-target'));
+                // Update URL hash without jumping
+                history.replaceState(null, null, ' ' + e.target.getAttribute('data-bs-target'));
+            });
+        });
+    });
+</script>
 @endsection
