@@ -71,6 +71,7 @@ Route::prefix('admin')->middleware(['auth', 'auditor.readonly'])->name('admin.')
     Route::get('/reports/suppliers', [ReportController::class, 'suppliers'])->name('reports.suppliers');
     Route::get('/reports/transactions', [ReportController::class, 'transactions'])->name('reports.transactions');
     Route::post('/reports/transactions/{id}/confirm', [ReportController::class, 'confirmTransaction'])->name('reports.transactions.confirm');
+    Route::post('/reports/transactions/{id}/reject', [ReportController::class, 'rejectTransaction'])->name('reports.transactions.reject');
     
     // Users (admin only)
     Route::resource('users', UserController::class)->middleware('role:admin');

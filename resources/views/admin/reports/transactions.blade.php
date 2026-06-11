@@ -76,12 +76,20 @@
                         </td>
                         <td class="text-center">
                             @if($transaction->status == 'pending')
-                                <form action="{{ route('admin.reports.transactions.confirm', $transaction->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm" onclick="return confirm('Confirm this transaction?')">
-                                        <i class="bi bi-check-lg me-1"></i> Confirm
-                                    </button>
-                                </form>
+                                <div class="d-flex justify-content-center gap-1">
+                                    <form action="{{ route('admin.reports.transactions.confirm', $transaction->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm" onclick="return confirm('Confirm this transaction?')">
+                                            <i class="bi bi-check-lg me-1"></i> Confirm
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('admin.reports.transactions.reject', $transaction->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm" onclick="return confirm('Reject and cancel this transaction?')">
+                                            <i class="bi bi-x-lg me-1"></i> Reject
+                                        </button>
+                                    </form>
+                                </div>
                             @else
                                 <span class="text-muted">-</span>
                             @endif

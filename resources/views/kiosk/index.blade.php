@@ -1552,9 +1552,9 @@
         function showReceipt(txn) {
             const receiptBody = document.getElementById('receiptContent');
             const taxRate = {{ ($settings['default_tax_rate'] ?? 12) / 100 }};
-            const taxLabel = '{{ $settings["tax_name"] ?? "VAT" }} ({{ $settings["default_tax_rate"] ?? 12 }}%)';
-            const storeName = '{{ $settings["store_name"] ?? "PureVibe" }}';
-            const footerMsg = '{{ $settings["receipt_footer"] ?? "Thank you for shopping with us!" }}';
+            const taxLabel = @json(($settings['tax_name'] ?? 'VAT') . ' (' . ($settings['default_tax_rate'] ?? 12) . '%)');
+            const storeName = @json($settings['store_name'] ?? 'PureVibe');
+            const footerMsg = @json($settings['receipt_footer'] ?? 'Thank you for shopping with us!');
 
             let itemsHtml = (txn.items || cart).map(item => {
                 return '<div class="receipt-item small">' +
@@ -1672,9 +1672,9 @@
 
             // Populate mini receipt preview
             const taxRate = {{ ($settings['default_tax_rate'] ?? 12) / 100 }};
-            const taxLabel = '{{ $settings["tax_name"] ?? "VAT" }} ({{ $settings["default_tax_rate"] ?? 12 }}%)';
-            const storeName = '{{ $settings["store_name"] ?? "PureVibe" }}';
-            const footerMsg = '{{ $settings["receipt_footer"] ?? "Thank you for shopping with us!" }}';
+            const taxLabel = @json(($settings['tax_name'] ?? 'VAT') . ' (' . ($settings['default_tax_rate'] ?? 12) . '%)');
+            const storeName = @json($settings['store_name'] ?? 'PureVibe');
+            const footerMsg = @json($settings['receipt_footer'] ?? 'Thank you for shopping with us!');
 
             const subtotal = txn.subtotal || 0;
             const tax = txn.tax_amount || txn.tax || (subtotal * taxRate);

@@ -196,4 +196,18 @@ class ReportController extends Controller
             return redirect()->back()->with('error', 'Failed to confirm: ' . $e->getMessage());
         }
     }
+
+    public function rejectTransaction($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+        
+        if ($transaction->status !== 'pending') {
+            return redirect()->back()->with('error', 'Transaction is already completed or cancelled.');
+        }
+
+        $transaction->status = 'cancelled';
+        $transaction->save();
+
+        return redirect()->back()->with('success', 'Transaction rejected successfully.');
+    }
 }
