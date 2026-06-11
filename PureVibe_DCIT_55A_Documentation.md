@@ -97,7 +97,7 @@ Below are the structural schemas of our primary tables.
 
 ## Chapter 3: Data Quality Assessment (Phase 2)
 
-Prior to running analytics, we populated the database with a dataset of 115+ records containing intentional inconsistencies to simulate real-world data problems.
+Prior to running analytics, we populated the database with a dataset of 60+ products and 15 transactions containing intentional inconsistencies to simulate real-world data problems.
 
 ### 3.1 Documented Issues
 1. **Inconsistent Casing:** The `categories` table contains incorrectly cased names (e.g., "eLeCtrOnIcs", "bEvErAgEs").
@@ -185,11 +185,11 @@ WHERE unit_price BETWEEN 50.00 AND 500.00;
 **[INSERT SCREENSHOT HERE: Result of Query 2]**
 
 ### Query 3: The `LIKE` Operator (Text Pattern Matching)
-*Locates any supplier containing 'Corp' or 'Corporation' in their name.*
+*Locates any supplier containing 'Co' in their name (e.g., CleanCo, Fresh Farms Co., BeautyBasics).*
 ```sql
-SELECT id, supplier_name, email 
+SELECT id, name as supplier_name, email 
 FROM suppliers 
-WHERE supplier_name LIKE '%Corp%';
+WHERE name LIKE '%Co%';
 ```
 **[INSERT SCREENSHOT HERE: Result of Query 3]**
 
@@ -245,12 +245,12 @@ GROUP BY category_id;
 **[INSERT SCREENSHOT HERE: Result of Analysis 3]**
 
 ### Analysis 4: `GROUP BY` with `HAVING`
-*Finds categories that have more than 15 active products.*
+*Finds categories that have more than 3 active products.*
 ```sql
 SELECT category_id, COUNT(*) as product_count 
 FROM products 
 GROUP BY category_id 
-HAVING product_count > 15;
+HAVING product_count > 3;
 ```
 **[INSERT SCREENSHOT HERE: Result of Analysis 4]**
 
@@ -279,7 +279,7 @@ To fully utilize the relational nature of our schema, we performed complex `JOIN
 SELECT 
     p.name as product_name, 
     c.name as category_name, 
-    s.supplier_name 
+    s.name as supplier_name 
 FROM products p
 INNER JOIN categories c ON p.category_id = c.id
 INNER JOIN suppliers s ON p.supplier_id = s.id

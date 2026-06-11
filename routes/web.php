@@ -32,6 +32,10 @@ Route::prefix('admin')->middleware(['auth', 'auditor.readonly'])->name('admin.')
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/live-data', [DashboardController::class, 'liveData'])->name('dashboard.live-data');
 
+    // Self-Profile: any authenticated user can view/update their own profile
+    Route::get('/profile', [UserController::class, 'editSelf'])->name('profile.edit');
+    Route::put('/profile', [UserController::class, 'updateSelf'])->name('profile.update');
+
     // DCIT 55A SQL Runner
     Route::get('/sql-runner', [SqlRunnerController::class, 'index'])->name('sql-runner.index')->middleware('role:admin');
     Route::post('/sql-runner/execute', [SqlRunnerController::class, 'execute'])->name('sql-runner.execute')->middleware('role:admin');

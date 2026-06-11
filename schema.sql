@@ -37,18 +37,8 @@ CREATE TABLE `audit_logs` (
   PRIMARY KEY (`id`),
   KEY `audit_logs_user_id_foreign` (`user_id`),
   CONSTRAINT `audit_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `audit_logs`
---
-
-LOCK TABLES `audit_logs` WRITE;
-/*!40000 ALTER TABLE `audit_logs` DISABLE KEYS */;
-INSERT INTO `audit_logs` VALUES (1,1,'User logged in','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:09:10','2026-06-10 05:09:10'),(2,1,'User logged in','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:15:08','2026-06-10 05:15:08'),(3,1,'User logged out','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:24:25','2026-06-10 05:24:25'),(4,1,'User logged in','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:26:01','2026-06-10 05:26:01'),(5,1,'Created supplier','App\\Models\\Supplier',6,NULL,'{\"id\": 6, \"name\": \"Vladiver\", \"email\": \"shawn@gmail.com\", \"phone\": \"09765724466\", \"address\": \"ditosatabikostreetmissnakita\", \"is_active\": true, \"created_at\": \"2026-06-10T13:31:14.000000Z\", \"updated_at\": \"2026-06-10T13:31:14.000000Z\", \"contact_person\": \"Shawn Michael Regencia\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:31:14','2026-06-10 05:31:14'),(6,1,'Updated supplier','App\\Models\\Supplier',5,'{\"id\": 5, \"name\": \"CleanHome Distributors\", \"email\": \"orders@cleanhome.com\", \"phone\": \"+63 921 567 8901\", \"address\": \"654 Supply Chain Ave, Mandaluyong City, Metro Manila\", \"is_active\": true, \"created_at\": \"2026-06-10T12:59:59.000000Z\", \"updated_at\": \"2026-06-10T12:59:59.000000Z\", \"contact_person\": \"Roberto Mendoza\"}','{\"id\": 5, \"name\": \"CleanHome Distributors\", \"email\": \"orders@cleanhome.com\", \"phone\": \"+63 921 567 8901\", \"address\": \"654 Supply Chain Ave, Mandaluyong City, Metro Manil\", \"is_active\": true, \"created_at\": \"2026-06-10T12:59:59.000000Z\", \"updated_at\": \"2026-06-10T13:31:36.000000Z\", \"contact_person\": \"Roberto Mendoza\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:31:36','2026-06-10 05:31:36'),(7,1,'Updated supplier','App\\Models\\Supplier',5,'{\"id\": 5, \"name\": \"CleanHome Distributors\", \"email\": \"orders@cleanhome.com\", \"phone\": \"+63 921 567 8901\", \"address\": \"654 Supply Chain Ave, Mandaluyong City, Metro Manil\", \"is_active\": true, \"created_at\": \"2026-06-10T12:59:59.000000Z\", \"updated_at\": \"2026-06-10T13:31:36.000000Z\", \"contact_person\": \"Roberto Mendoza\"}','{\"id\": 5, \"name\": \"CleanHome Distributors\", \"email\": \"orders@cleanhome.com\", \"phone\": \"+63 921 567 8901\", \"address\": \"654 Supply Chain Ave, Mandaluyong City, Metro Manila\", \"is_active\": true, \"created_at\": \"2026-06-10T12:59:59.000000Z\", \"updated_at\": \"2026-06-10T13:31:46.000000Z\", \"contact_person\": \"Roberto Mendoza\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:31:46','2026-06-10 05:31:46'),(8,1,'Created stock entry','App\\Models\\StockEntry',1,NULL,'{\"id\": 1, \"notes\": \"Add lysol\", \"status\": \"pending\", \"user_id\": 1, \"created_at\": \"2026-06-10T13:55:54.000000Z\", \"updated_at\": \"2026-06-10T13:55:54.000000Z\", \"supplier_id\": \"2\", \"entry_number\": \"SE-20260610-GTIB1T\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 05:55:54','2026-06-10 05:55:54'),(9,1,'Deleted product','App\\Models\\Product',18,'{\"id\": 18, \"sku\": \"CAN-CAMP298\", \"name\": \"Campbell\'s Cream of Mushroom Soup 298g\", \"unit\": \"can\", \"image\": null, \"barcode\": \"0051000012517\", \"is_active\": true, \"created_at\": \"2026-06-10T13:00:03.000000Z\", \"unit_price\": \"95.00\", \"updated_at\": \"2026-06-10T13:00:03.000000Z\", \"category_id\": 3, \"description\": \"Rich and creamy condensed mushroom soup\", \"supplier_id\": 3, \"current_stock\": 7, \"low_stock_threshold\": 10}',NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 06:00:26','2026-06-10 06:00:26'),(10,1,'Created stock entry','App\\Models\\StockEntry',2,NULL,'{\"id\": 2, \"notes\": \"Restocking lysol\", \"status\": \"pending\", \"user_id\": 1, \"created_at\": \"2026-06-10T14:07:36.000000Z\", \"updated_at\": \"2026-06-10T14:07:36.000000Z\", \"supplier_id\": \"5\", \"entry_number\": \"SE-20260610-QUHABH\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 06:07:36','2026-06-10 06:07:36'),(11,1,'Created stock entry','App\\Models\\StockEntry',3,NULL,'{\"id\": 3, \"notes\": null, \"status\": \"pending\", \"user_id\": 1, \"created_at\": \"2026-06-10T14:13:46.000000Z\", \"updated_at\": \"2026-06-10T14:13:46.000000Z\", \"supplier_id\": \"5\", \"entry_number\": \"SE-20260610-QICUVO\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 14:13:46','2026-06-10 14:13:46'),(12,1,'Created stock entry','App\\Models\\StockEntry',4,NULL,'{\"id\": 4, \"notes\": null, \"status\": \"pending\", \"user_id\": 1, \"created_at\": \"2026-06-10T14:18:36.000000Z\", \"updated_at\": \"2026-06-10T14:18:36.000000Z\", \"supplier_id\": \"4\", \"entry_number\": \"SE-20260610-17T6NQ\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 14:18:36','2026-06-10 14:18:36'),(13,1,'Approved stock entry','App\\Models\\StockEntry',4,'{\"id\": 4, \"notes\": null, \"status\": \"pending\", \"user_id\": 1, \"created_at\": \"2026-06-10T14:18:36.000000Z\", \"updated_at\": \"2026-06-10T14:18:36.000000Z\", \"approved_at\": null, \"approved_by\": null, \"supplier_id\": 4, \"entry_number\": \"SE-20260610-17T6NQ\"}','{\"id\": 4, \"items\": [{\"id\": 4, \"notes\": null, \"product\": {\"id\": 28, \"sku\": \"HH-LYSOL340\", \"name\": \"Lysol Disinfectant Spray 340g\", \"unit\": \"can\", \"image\": null, \"barcode\": \"0019200044284\", \"is_active\": true, \"created_at\": \"2026-06-10T05:00:06.000000Z\", \"unit_price\": \"295.00\", \"updated_at\": \"2026-06-10T05:48:22.000000Z\", \"category_id\": 5, \"description\": \"Kills 99.9% of viruses and bacteria on surfaces\", \"supplier_id\": 5, \"current_stock\": 6, \"low_stock_threshold\": 5}, \"quantity\": 6, \"created_at\": \"2026-06-10T14:18:36.000000Z\", \"product_id\": 28, \"updated_at\": \"2026-06-10T14:18:36.000000Z\", \"stock_entry_id\": 4}], \"notes\": null, \"status\": \"approved\", \"user_id\": 1, \"created_at\": \"2026-06-10T14:18:36.000000Z\", \"updated_at\": \"2026-06-10T14:28:07.000000Z\", \"approved_at\": \"2026-06-10T14:28:07.000000Z\", \"approved_by\": 1, \"supplier_id\": 4, \"entry_number\": \"SE-20260610-17T6NQ\"}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 14:28:07','2026-06-10 14:28:07'),(14,1,'User logged in','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 14:49:45','2026-06-10 14:49:45'),(15,1,'Created product','App\\Models\\Product',31,NULL,'{\"id\": 31, \"sku\": \"PRD-6K42NM\", \"name\": \"carl\", \"unit\": \"piece\", \"barcode\": \"338898357250\", \"is_active\": true, \"created_at\": \"2026-06-10T14:50:32.000000Z\", \"unit_price\": \"67.00\", \"updated_at\": \"2026-06-10T14:50:32.000000Z\", \"category_id\": \"2\", \"description\": null, \"supplier_id\": \"2\", \"current_stock\": 54, \"low_stock_threshold\": 10}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 14:50:32','2026-06-10 14:50:32'),(16,1,'User logged out','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 14:55:21','2026-06-10 14:55:21'),(17,1,'User logged in','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 14:55:46','2026-06-10 14:55:46'),(18,1,'User logged out','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 15:00:44','2026-06-10 15:00:44'),(19,3,'User logged in','App\\Models\\User',3,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 15:00:56','2026-06-10 15:00:56'),(20,3,'User logged out','App\\Models\\User',3,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 15:01:30','2026-06-10 15:01:30'),(21,1,'User logged in','App\\Models\\User',1,NULL,NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 15:01:39','2026-06-10 15:01:39'),(22,1,'Created product','App\\Models\\Product',32,NULL,'{\"id\": 32, \"sku\": \"PRD-YGR06C\", \"name\": \"karu\", \"unit\": \"piece\", \"image\": \"products/fkvsKHSVrMV7bS3wlvGE8kbG5FjuuLFzVQl4IoEo.jpg\", \"barcode\": \"862156288349\", \"is_active\": true, \"created_at\": \"2026-06-10T15:16:32.000000Z\", \"unit_price\": \"6767.00\", \"updated_at\": \"2026-06-10T15:16:32.000000Z\", \"category_id\": \"2\", \"description\": \"hhhii\", \"supplier_id\": \"2\", \"current_stock\": 11, \"low_stock_threshold\": 10}','127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','2026-06-10 15:16:33','2026-06-10 15:16:33');
-/*!40000 ALTER TABLE `audit_logs` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cache`
@@ -66,15 +56,6 @@ CREATE TABLE `cache` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cache`
---
-
-LOCK TABLES `cache` WRITE;
-/*!40000 ALTER TABLE `cache` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cache` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `categories`
 --
 
@@ -90,18 +71,8 @@ CREATE TABLE `categories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categories`
---
-
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'Beverages','Drinks, juices, sodas, water, and other beverages',NULL,1,'2026-06-10 04:59:56','2026-06-10 04:59:56'),(2,'Snacks','Chips, crackers, cookies, nuts, and other snack items',NULL,1,'2026-06-10 04:59:56','2026-06-10 04:59:56'),(3,'Canned Goods','Canned vegetables, fruits, meats, soups, and sauces',NULL,1,'2026-06-10 04:59:57','2026-06-10 04:59:57'),(4,'Frozen Foods','Frozen meals, vegetables, ice cream, and frozen treats',NULL,1,'2026-06-10 04:59:57','2026-06-10 04:59:57'),(5,'Household Products','Cleaning supplies, paper goods, and household essentials',NULL,1,'2026-06-10 04:59:57','2026-06-10 04:59:57');
-/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `inventory_movements`
@@ -128,18 +99,8 @@ CREATE TABLE `inventory_movements` (
   KEY `inventory_movements_user_id_foreign` (`user_id`),
   CONSTRAINT `inventory_movements_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   CONSTRAINT `inventory_movements_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `inventory_movements`
---
-
-LOCK TABLES `inventory_movements` WRITE;
-/*!40000 ALTER TABLE `inventory_movements` DISABLE KEYS */;
-INSERT INTO `inventory_movements` VALUES (1,1,'out',1,150,149,'App\\Models\\Transaction',1,'Sale via kiosk',NULL,'2026-06-10 05:08:13','2026-06-10 05:08:13'),(2,3,'out',5,80,75,'App\\Models\\Transaction',2,'Sale via kiosk',NULL,'2026-06-10 05:24:55','2026-06-10 05:24:55'),(3,4,'out',7,200,193,'App\\Models\\Transaction',2,'Sale via kiosk',NULL,'2026-06-10 05:24:55','2026-06-10 05:24:55'),(4,4,'out',1,193,192,'App\\Models\\Transaction',3,'Sale via kiosk',NULL,'2026-06-10 05:25:18','2026-06-10 05:25:18'),(5,3,'out',1,75,74,'App\\Models\\Transaction',3,'Sale via kiosk',NULL,'2026-06-10 05:25:18','2026-06-10 05:25:18'),(6,28,'out',2,3,1,'App\\Models\\Transaction',4,'Sale via kiosk',NULL,'2026-06-10 05:42:16','2026-06-10 05:42:16'),(7,28,'out',1,1,0,'App\\Models\\Transaction',5,'Sale via kiosk',NULL,'2026-06-10 05:48:22','2026-06-10 05:48:22'),(8,29,'out',1,50,49,'App\\Models\\Transaction',6,'Sale via kiosk',NULL,'2026-06-10 05:48:49','2026-06-10 05:48:49'),(9,29,'out',1,49,48,'App\\Models\\Transaction',7,'Sale via kiosk',NULL,'2026-06-10 05:48:55','2026-06-10 05:48:55'),(10,28,'in',6,0,6,'App\\Models\\StockEntry',4,'Stock entry approved: SE-20260610-17T6NQ',1,'2026-06-10 14:28:07','2026-06-10 14:28:07'),(11,3,'out',2,74,72,'App\\Models\\Transaction',8,'Sale via kiosk',NULL,'2026-06-10 14:47:50','2026-06-10 14:47:50'),(12,31,'in',54,0,54,NULL,NULL,'Initial stock on product creation',1,'2026-06-10 14:50:32','2026-06-10 14:50:32'),(13,32,'in',11,0,11,NULL,NULL,'Initial stock on product creation',1,'2026-06-10 15:16:33','2026-06-10 15:16:33'),(14,32,'out',1,11,10,'App\\Models\\Transaction',10,'Sale via kiosk',NULL,'2026-06-10 15:16:50','2026-06-10 15:16:50'),(15,32,'out',1,10,9,'App\\Models\\Transaction',11,'Sale via kiosk',NULL,'2026-06-10 15:19:16','2026-06-10 15:19:16'),(16,2,'out',1,120,119,'App\\Models\\Transaction',12,'Sale via kiosk',NULL,'2026-06-10 15:32:57','2026-06-10 15:32:57'),(17,3,'out',1,72,71,'App\\Models\\Transaction',13,'Sale via kiosk',NULL,'2026-06-10 15:33:09','2026-06-10 15:33:09'),(18,12,'out',1,5,4,'App\\Models\\Transaction',14,'Sale via kiosk',NULL,'2026-06-10 15:35:21','2026-06-10 15:35:21'),(19,1,'out',1,149,148,'App\\Models\\Transaction',15,'Sale via kiosk',NULL,'2026-06-10 15:35:51','2026-06-10 15:35:51'),(20,1,'out',1,148,147,'App\\Models\\Transaction',15,'Sale via kiosk (confirmed)',NULL,'2026-06-10 15:40:52','2026-06-10 15:40:52');
-/*!40000 ALTER TABLE `inventory_movements` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `jobs`
@@ -162,15 +123,6 @@ CREATE TABLE `jobs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `jobs`
---
-
-LOCK TABLES `jobs` WRITE;
-/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `migrations`
 --
 
@@ -182,18 +134,8 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `migrations`
---
-
-LOCK TABLES `migrations` WRITE;
-/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2024_01_01_000001_create_roles_table',1),(2,'2024_01_01_000002_create_users_table',1),(3,'2024_01_01_000003_create_categories_table',1),(4,'2024_01_01_000004_create_suppliers_table',1),(5,'2024_01_01_000005_create_products_table',1),(6,'2024_01_01_000006_create_transactions_table',1),(7,'2024_01_01_000007_create_transaction_items_table',1),(8,'2024_01_01_000008_create_stock_entries_table',1),(9,'2024_01_01_000009_create_stock_entry_items_table',1),(10,'2024_01_01_000010_create_inventory_movements_table',1),(11,'2024_01_01_000011_create_audit_logs_table',1),(12,'2024_01_01_000012_create_sessions_table',1),(13,'2024_01_01_000013_create_cache_table',1),(14,'2024_01_01_000014_create_jobs_table',1),(15,'2026_06_10_230607_create_settings_table',2);
-/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `products`
@@ -212,6 +154,8 @@ CREATE TABLE `products` (
   `sku` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `barcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unit_price` decimal(10,2) NOT NULL,
+  `cost_price` decimal(10,2) DEFAULT NULL COMMENT 'Supplier cost price for this product',
+  `markup_percentage` decimal(5,2) DEFAULT NULL COMMENT 'Per-product markup override. NULL = use global setting.',
   `current_stock` int NOT NULL DEFAULT '0',
   `low_stock_threshold` int NOT NULL DEFAULT '10',
   `unit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'piece',
@@ -225,18 +169,8 @@ CREATE TABLE `products` (
   KEY `products_supplier_id_foreign` (`supplier_id`),
   CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
   CONSTRAINT `products_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `products`
---
-
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Coca-Cola 330ml','Classic Coca-Cola carbonated soft drink in a 330ml can',1,1,NULL,'BEV-COLA330','5449000000996',35.00,147,20,'can',1,'2026-06-10 04:59:59','2026-06-10 15:40:52'),(2,'Sprite 330ml','Lemon-lime flavored carbonated drink in a 330ml can',1,1,NULL,'BEV-SPRT330','5449000001061',35.00,119,20,'can',1,'2026-06-10 04:59:59','2026-06-10 15:32:57'),(3,'Nestea Lemon Iced Tea 500ml','Refreshing lemon-flavored iced tea beverage',1,1,NULL,'BEV-NESTEA500','4800361414142',30.00,71,15,'bottle',1,'2026-06-10 04:59:59','2026-06-10 15:33:09'),(4,'Aquafina Purified Water 1L','Pure and refreshing purified drinking water',1,1,NULL,'BEV-AQUA1L','0012000001086',25.00,192,30,'bottle',1,'2026-06-10 05:00:00','2026-06-10 05:25:18'),(5,'Red Bull Energy Drink 250ml','Energy drink with taurine and caffeine',1,1,NULL,'BEV-REDB250','9002490100070',65.00,60,10,'can',1,'2026-06-10 05:00:00','2026-06-10 05:00:00'),(6,'Kopiko 78°C Coffee 240ml','Ready-to-drink smooth coffee beverage',1,1,NULL,'BEV-KOP240','8886001400023',28.00,8,10,'bottle',1,'2026-06-10 05:00:00','2026-06-10 05:00:00'),(7,'Minute Maid Orange Juice 1L','Fresh-tasting orange juice from concentrate',1,1,NULL,'BEV-MMOJ1L','5449000134127',85.00,40,10,'carton',1,'2026-06-10 05:00:01','2026-06-10 05:00:01'),(8,'Lay\'s Classic Potato Chips 184g','Crispy classic salted potato chips',2,2,NULL,'SNK-LAYS184','0028400064545',89.00,45,10,'bag',1,'2026-06-10 05:00:01','2026-06-10 05:00:01'),(9,'Pringles Original 107g','Stackable original flavor potato crisps',2,2,NULL,'SNK-PRNG107','5053990101573',99.00,35,8,'can',1,'2026-06-10 05:00:01','2026-06-10 05:00:01'),(10,'Oreo Original Cookies 133g','Chocolate sandwich cookies with vanilla cream filling',2,2,NULL,'SNK-OREO133','7622210100610',45.00,70,12,'pack',1,'2026-06-10 05:00:01','2026-06-10 05:00:01'),(11,'SkyFlakes Crackers 250g','Light and crispy saltine crackers',2,2,NULL,'SNK-SKYF250','4800092160325',52.00,90,15,'pack',1,'2026-06-10 05:00:01','2026-06-10 05:00:01'),(12,'Planters Mixed Nuts 292g','Premium mix of peanuts, cashews, almonds, and pecans',2,2,NULL,'SNK-PLAN292','0029000016811',320.00,4,8,'can',1,'2026-06-10 05:00:02','2026-06-10 15:35:21'),(13,'Jack \'n Jill Chippy 110g','Corn chips with barbecue flavor',2,2,NULL,'SNK-CHIP110','4800016551109',32.00,100,15,'bag',1,'2026-06-10 05:00:02','2026-06-10 05:00:02'),(14,'Monde Butter Cookies 400g','Assorted butter cookies in a decorative tin',2,2,NULL,'SNK-MOND400','4800166601012',150.00,25,5,'tin',1,'2026-06-10 05:00:02','2026-06-10 05:00:02'),(15,'Century Tuna Flakes in Oil 180g','Premium tuna flakes packed in vegetable oil',3,3,NULL,'CAN-TUNA180','4800092130168',42.00,100,20,'can',1,'2026-06-10 05:00:03','2026-06-10 05:00:03'),(16,'Argentina Corned Beef 260g','Classic corned beef in a convenient can',3,3,NULL,'CAN-CORN260','4800036760260',68.00,75,15,'can',1,'2026-06-10 05:00:03','2026-06-10 05:00:03'),(17,'Del Monte Pineapple Chunks 432g','Sweet pineapple chunks in light syrup',3,3,NULL,'CAN-PINE432','0024000163268',55.00,60,12,'can',1,'2026-06-10 05:00:03','2026-06-10 05:00:03'),(19,'Hunt\'s Pork and Beans 230g','Savory pork and beans in tomato sauce',3,3,NULL,'CAN-HUNT230','0027000379073',28.00,110,20,'can',1,'2026-06-10 05:00:04','2026-06-10 05:00:04'),(20,'Spam Classic Luncheon Meat 340g','Classic fully cooked luncheon meat',3,3,NULL,'CAN-SPAM340','0037600108003',185.00,30,8,'can',1,'2026-06-10 05:00:04','2026-06-10 05:00:04'),(21,'Magnolia Ice Cream Vanilla 750ml','Rich and creamy classic vanilla ice cream',4,4,NULL,'FRZ-ICVN750','4800787100758',180.00,25,5,'tub',1,'2026-06-10 05:00:04','2026-06-10 05:00:04'),(22,'McCain French Fries 750g','Premium golden crispy French fries',4,4,NULL,'FRZ-FRIE750','8710438091038',145.00,35,8,'bag',1,'2026-06-10 05:00:04','2026-06-10 05:00:04'),(23,'Bibigo Chicken Dumplings 500g','Korean-style chicken and vegetable dumplings',4,4,NULL,'FRZ-DUMP500','8801007057477',210.00,18,5,'pack',1,'2026-06-10 05:00:05','2026-06-10 05:00:05'),(24,'Green Giant Mixed Vegetables 450g','Frozen mix of corn, peas, carrots, and green beans',4,4,NULL,'FRZ-VEGM450','0020000121024',120.00,22,5,'bag',1,'2026-06-10 05:00:05','2026-06-10 05:00:05'),(25,'Tender Juicy Hotdog 1kg','Classic pork and chicken hotdogs',4,4,NULL,'FRZ-HOTD1KG','4800092162022',165.00,40,10,'pack',1,'2026-06-10 05:00:05','2026-06-10 05:00:05'),(26,'Joy Dishwashing Liquid Lemon 500ml','Powerful grease-cutting dishwashing liquid',5,5,NULL,'HH-JOY500','4902430890922',78.00,55,10,'bottle',1,'2026-06-10 05:00:05','2026-06-10 05:00:05'),(27,'Ariel Powder Detergent 1kg','Premium laundry detergent powder with stain removal',5,5,NULL,'HH-ARIEL1KG','4902430890939',145.00,40,8,'pack',1,'2026-06-10 05:00:06','2026-06-10 05:00:06'),(28,'Lysol Disinfectant Spray 340g','Kills 99.9% of viruses and bacteria on surfaces',5,5,NULL,'HH-LYSOL340','0019200044284',295.00,6,5,'can',1,'2026-06-10 05:00:06','2026-06-10 14:28:07'),(29,'Bounty Paper Towels 2-Ply','Absorbent and strong 2-ply paper towels',5,5,NULL,'HH-BOUNT2P','0037000744849',120.00,48,10,'roll',1,'2026-06-10 05:00:06','2026-06-10 05:48:55'),(30,'Glad Trash Bags 30 Gallon 25ct','Heavy-duty drawstring trash bags',5,5,NULL,'HH-GLAD30G','0012587700211',185.00,20,5,'box',1,'2026-06-10 05:00:06','2026-06-10 05:00:06'),(31,'carl',NULL,2,2,'products/test.png','PRD-6K42NM','338898357250',67.00,54,10,'piece',1,'2026-06-10 14:50:32','2026-06-10 14:58:18'),(32,'karu','hhhii',2,2,'products/fkvsKHSVrMV7bS3wlvGE8kbG5FjuuLFzVQl4IoEo.jpg','PRD-YGR06C','862156288349',6767.00,9,10,'piece',1,'2026-06-10 15:16:32','2026-06-10 15:19:16');
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `roles`
@@ -256,16 +190,6 @@ CREATE TABLE `roles` (
   UNIQUE KEY `roles_name_unique` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `roles`
---
-
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'admin','Admin','Full system access with all privileges','2026-06-10 04:59:54','2026-06-10 04:59:54'),(2,'inventory_manager','Inventory Manager','Manage products, categories, suppliers, and inventory','2026-06-10 04:59:54','2026-06-10 04:59:54'),(3,'auditor','Auditor','Read-only access to view reports and logs','2026-06-10 04:59:54','2026-06-10 04:59:54');
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sessions`
@@ -288,16 +212,6 @@ CREATE TABLE `sessions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sessions`
---
-
-LOCK TABLES `sessions` WRITE;
-/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('5vnZh3oqWWznjxmALlwdQ5bV2IH2whodhlVv9nb9',NULL,'127.0.0.1','curl/8.5.0','eyJfdG9rZW4iOiJleFFuSVp4RGJqTHhPNVI0bGF5WDRqQVRPSDVSRUVDZ292UVRlUlM1IiwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1781103599),('9ZHSVlUXt7eupvqNn0XZpH9lP76J6vX0UhKHXtx1',NULL,'127.0.0.1','curl/8.5.0','eyJfdG9rZW4iOiIzaVJlSEx4Z0RQQWFtM2N1NkdLd3RPZUI1ZzVaNjg1TmVRT1lWeEhHIiwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1781103731),('SNO061MEjzJeWabp5twwmaYJ2i3W10EKCn3dXDYd',1,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','eyJfdG9rZW4iOiJ4aUxZcXdDWDNzcmNoZmh5Qk0yVFJYSTlpMVc2dnFkdEtSVEQzdmQ5IiwiX2ZsYXNoIjp7Im5ldyI6W10sIm9sZCI6W119LCJfcHJldmlvdXMiOnsidXJsIjoiaHR0cDpcL1wvbG9jYWxob3N0OjgwMDBcL2FkbWluXC9wcm9kdWN0c1wvMzBcL2VkaXQiLCJyb3V0ZSI6ImFkbWluLnByb2R1Y3RzLmVkaXQifSwidXJsIjpbXSwibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiOjF9',1781102754),('U0qe51tLlU91uTo3asYdI1nXCSbvbT7kyLeQEEaT',1,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36','eyJfdG9rZW4iOiJxaUhKVm92enRmWm5BaUttMmc4Rk5DSVAxT1dNdDhRaHVjQm5KYnpVIiwiX2ZsYXNoIjp7Im5ldyI6W10sIm9sZCI6W119LCJfcHJldmlvdXMiOnsidXJsIjoiaHR0cDpcL1wvbG9jYWxob3N0OjgwMDBcL2FkbWluXC9kYXNoYm9hcmQiLCJyb3V0ZSI6ImFkbWluLmRhc2hib2FyZCJ9LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6MX0=',1781106326);
-/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `settings`
 --
 
@@ -312,18 +226,8 @@ CREATE TABLE `settings` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `settings_key_unique` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `settings`
---
-
-LOCK TABLES `settings` WRITE;
-/*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES (1,'store_name','PureVibe Kiosk','2026-06-10 15:41:20','2026-06-10 15:41:20'),(2,'contact_email','support@purevibe.com','2026-06-10 15:41:21','2026-06-10 15:41:21'),(3,'contact_phone','(555) 123-4567','2026-06-10 15:41:21','2026-06-10 15:41:21'),(4,'store_address','123 Grocery Lane&#10;Market District','2026-06-10 15:41:21','2026-06-10 15:41:21'),(5,'default_tax_rate','13','2026-06-10 15:41:21','2026-06-10 15:41:21'),(6,'tax_name','VAT','2026-06-10 15:41:22','2026-06-10 15:41:22'),(7,'receipt_header','Welcome to PureVibe!','2026-06-10 15:41:22','2026-06-10 15:41:22'),(8,'receipt_footer','Thank you for shopping with us!&#10;Please come again.','2026-06-10 15:41:22','2026-06-10 15:41:22'),(9,'idle_timeout','120','2026-06-10 15:41:22','2026-06-10 15:41:22'),(10,'currency_symbol','₱','2026-06-10 15:41:23','2026-06-10 15:41:23'),(11,'enable_sound','1','2026-06-10 15:41:23','2026-06-10 15:41:23'),(12,'allow_guest','1','2026-06-10 15:41:23','2026-06-10 15:41:23'),(13,'prices_include_tax','1','2026-06-10 15:41:23','2026-06-10 15:41:53');
-/*!40000 ALTER TABLE `settings` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `stock_entries`
@@ -351,18 +255,8 @@ CREATE TABLE `stock_entries` (
   CONSTRAINT `stock_entries_approved_by_foreign` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `stock_entries_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE SET NULL,
   CONSTRAINT `stock_entries_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stock_entries`
---
-
-LOCK TABLES `stock_entries` WRITE;
-/*!40000 ALTER TABLE `stock_entries` DISABLE KEYS */;
-INSERT INTO `stock_entries` VALUES (1,'SE-20260610-GTIB1T',2,1,'pending','Add lysol',NULL,NULL,'2026-06-10 05:55:54','2026-06-10 05:55:54'),(2,'SE-20260610-QUHABH',5,1,'pending','Restocking lysol',NULL,NULL,'2026-06-10 06:07:36','2026-06-10 06:07:36'),(3,'SE-20260610-QICUVO',5,1,'pending',NULL,NULL,NULL,'2026-06-10 14:13:46','2026-06-10 14:13:46'),(4,'SE-20260610-17T6NQ',4,1,'approved',NULL,1,'2026-06-10 14:28:07','2026-06-10 14:18:36','2026-06-10 14:28:07');
-/*!40000 ALTER TABLE `stock_entries` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `stock_entry_items`
@@ -376,6 +270,7 @@ CREATE TABLE `stock_entry_items` (
   `stock_entry_id` bigint unsigned NOT NULL,
   `product_id` bigint unsigned NOT NULL,
   `quantity` int NOT NULL,
+  `unit_cost` decimal(10,2) DEFAULT NULL,
   `notes` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -384,18 +279,36 @@ CREATE TABLE `stock_entry_items` (
   KEY `stock_entry_items_product_id_foreign` (`product_id`),
   CONSTRAINT `stock_entry_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   CONSTRAINT `stock_entry_items_stock_entry_id_foreign` FOREIGN KEY (`stock_entry_id`) REFERENCES `stock_entries` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stock_entry_items`
+-- Table structure for table `supplier_product_prices`
 --
 
-LOCK TABLES `stock_entry_items` WRITE;
-/*!40000 ALTER TABLE `stock_entry_items` DISABLE KEYS */;
-INSERT INTO `stock_entry_items` VALUES (1,1,28,5,NULL,'2026-06-10 05:55:54','2026-06-10 05:55:54'),(2,2,28,6,NULL,'2026-06-10 06:07:36','2026-06-10 06:07:36'),(3,3,28,6,NULL,'2026-06-10 14:13:46','2026-06-10 14:13:46'),(4,4,28,6,NULL,'2026-06-10 14:18:36','2026-06-10 14:18:36');
-/*!40000 ALTER TABLE `stock_entry_items` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `supplier_product_prices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `supplier_product_prices` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `supplier_id` bigint unsigned NOT NULL,
+  `product_id` bigint unsigned NOT NULL,
+  `cost_price` decimal(10,2) NOT NULL COMMENT 'Price supplier charges us',
+  `selling_price` decimal(10,2) NOT NULL COMMENT 'Calculated selling price at time of recording',
+  `markup_percentage` decimal(5,2) NOT NULL COMMENT 'Markup % applied at time of recording',
+  `reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Reason for price change',
+  `recorded_by` bigint unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `supplier_product_prices_supplier_id_foreign` (`supplier_id`),
+  KEY `supplier_product_prices_product_id_foreign` (`product_id`),
+  KEY `supplier_product_prices_recorded_by_foreign` (`recorded_by`),
+  CONSTRAINT `supplier_product_prices_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `supplier_product_prices_recorded_by_foreign` FOREIGN KEY (`recorded_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `supplier_product_prices_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `suppliers`
@@ -419,16 +332,6 @@ CREATE TABLE `suppliers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `suppliers`
---
-
-LOCK TABLES `suppliers` WRITE;
-/*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
-INSERT INTO `suppliers` VALUES (1,'Pacific Beverages Inc.','Juan Dela Cruz','+63 917 123 4567','sales@pacificbev.com','123 Industrial Ave, Makati City, Metro Manila',1,'2026-06-10 04:59:58','2026-06-10 04:59:58'),(2,'Golden Snacks Trading','Maria Santos','+63 918 234 5678','orders@goldensnacks.com','456 Commerce St, Quezon City, Metro Manila',1,'2026-06-10 04:59:58','2026-06-10 04:59:58'),(3,'Metro Canned Goods Corp.','Pedro Reyes','+63 919 345 6789','supply@metrocanned.com','789 Warehouse Blvd, Pasig City, Metro Manila',1,'2026-06-10 04:59:58','2026-06-10 04:59:58'),(4,'Arctic Frozen Foods Co.','Ana Garcia','+63 920 456 7890','info@arcticfoods.com','321 Cold Storage Rd, Taguig City, Metro Manila',1,'2026-06-10 04:59:58','2026-06-10 04:59:58'),(5,'CleanHome Distributors','Roberto Mendoza','+63 921 567 8901','orders@cleanhome.com','654 Supply Chain Ave, Mandaluyong City, Metro Manila',1,'2026-06-10 04:59:59','2026-06-10 05:31:46'),(6,'Vladiver','Shawn Michael Regencia','09765724466','shawn@gmail.com','ditosatabikostreetmissnakita',1,'2026-06-10 05:31:14','2026-06-10 05:31:14');
-/*!40000 ALTER TABLE `suppliers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `transaction_items`
 --
 
@@ -450,18 +353,8 @@ CREATE TABLE `transaction_items` (
   KEY `transaction_items_product_id_foreign` (`product_id`),
   CONSTRAINT `transaction_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   CONSTRAINT `transaction_items_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transaction_items`
---
-
-LOCK TABLES `transaction_items` WRITE;
-/*!40000 ALTER TABLE `transaction_items` DISABLE KEYS */;
-INSERT INTO `transaction_items` VALUES (1,1,1,'Coca-Cola 330ml',35.00,1,35.00,'2026-06-10 05:08:13','2026-06-10 05:08:13'),(2,2,3,'Nestea Lemon Iced Tea 500ml',30.00,5,150.00,'2026-06-10 05:24:55','2026-06-10 05:24:55'),(3,2,4,'Aquafina Purified Water 1L',25.00,7,175.00,'2026-06-10 05:24:55','2026-06-10 05:24:55'),(4,3,4,'Aquafina Purified Water 1L',25.00,1,25.00,'2026-06-10 05:25:18','2026-06-10 05:25:18'),(5,3,3,'Nestea Lemon Iced Tea 500ml',30.00,1,30.00,'2026-06-10 05:25:18','2026-06-10 05:25:18'),(6,4,28,'Lysol Disinfectant Spray 340g',295.00,2,590.00,'2026-06-10 05:42:16','2026-06-10 05:42:16'),(7,5,28,'Lysol Disinfectant Spray 340g',295.00,1,295.00,'2026-06-10 05:48:22','2026-06-10 05:48:22'),(8,6,29,'Bounty Paper Towels 2-Ply',120.00,1,120.00,'2026-06-10 05:48:49','2026-06-10 05:48:49'),(9,7,29,'Bounty Paper Towels 2-Ply',120.00,1,120.00,'2026-06-10 05:48:55','2026-06-10 05:48:55'),(10,8,3,'Nestea Lemon Iced Tea 500ml',30.00,2,60.00,'2026-06-10 14:47:50','2026-06-10 14:47:50'),(11,10,32,'karu',6767.00,1,6767.00,'2026-06-10 15:16:50','2026-06-10 15:16:50'),(12,11,32,'karu',6767.00,1,6767.00,'2026-06-10 15:19:16','2026-06-10 15:19:16'),(13,12,2,'Sprite 330ml',35.00,1,35.00,'2026-06-10 15:32:57','2026-06-10 15:32:57'),(14,13,3,'Nestea Lemon Iced Tea 500ml',30.00,1,30.00,'2026-06-10 15:33:09','2026-06-10 15:33:09'),(15,14,12,'Planters Mixed Nuts 292g',320.00,1,320.00,'2026-06-10 15:35:21','2026-06-10 15:35:21'),(16,15,1,'Coca-Cola 330ml',35.00,1,35.00,'2026-06-10 15:35:51','2026-06-10 15:35:51');
-/*!40000 ALTER TABLE `transaction_items` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `transactions`
@@ -484,18 +377,8 @@ CREATE TABLE `transactions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `transactions_transaction_number_unique` (`transaction_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transactions`
---
-
-LOCK TABLES `transactions` WRITE;
-/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
-INSERT INTO `transactions` VALUES (1,'TXN-20260610-FQAXNA',35.00,0.00,0.00,35.00,'cash','completed',NULL,'2026-06-10 05:08:13','2026-06-10 05:08:13'),(2,'TXN-20260610-ETJNGL',325.00,0.00,0.00,325.00,'cash','completed',NULL,'2026-06-10 05:24:55','2026-06-10 05:24:55'),(3,'TXN-20260610-YXGVQ2',55.00,0.00,0.00,55.00,'cash','completed',NULL,'2026-06-10 05:25:18','2026-06-10 05:25:18'),(4,'TXN-20260610-SOI1NL',590.00,0.00,0.00,590.00,'cash','completed',NULL,'2026-06-10 05:42:16','2026-06-10 05:42:16'),(5,'TXN-20260610-AHMERG',295.00,0.00,0.00,295.00,'cash','completed',NULL,'2026-06-10 05:48:22','2026-06-10 05:48:22'),(6,'TXN-20260610-FSZTRK',120.00,0.00,0.00,120.00,'cash','completed',NULL,'2026-06-10 05:48:49','2026-06-10 05:48:49'),(7,'TXN-20260610-BWQC4F',120.00,0.00,0.00,120.00,'cash','completed',NULL,'2026-06-10 05:48:55','2026-06-10 05:48:55'),(8,'TXN-20260610-JTKZME',60.00,0.00,0.00,60.00,'cash','completed',NULL,'2026-06-10 14:47:50','2026-06-10 14:47:50'),(9,'TXN-20260610-JSU0FO',100.00,0.00,0.00,100.00,'cash','completed',NULL,'2026-06-10 15:12:45','2026-06-10 15:45:25'),(10,'TXN-20260610-KFWRDC',6767.00,812.04,0.00,7579.04,'cash','completed',NULL,'2026-06-10 15:16:50','2026-06-10 15:34:52'),(11,'TXN-20260610-EFULIB',6767.00,812.04,0.00,7579.04,'cash','completed',NULL,'2026-06-10 15:19:16','2026-06-10 15:20:25'),(12,'TXN-20260610-QA6HCK',35.00,4.20,0.00,39.20,'cash','completed',NULL,'2026-06-10 15:32:57','2026-06-10 15:34:39'),(13,'TXN-20260610-JZMH1K',30.00,3.60,0.00,33.60,'cash','completed',NULL,'2026-06-10 15:33:09','2026-06-10 15:33:24'),(14,'TXN-20260610-SDH3UN',320.00,38.40,0.00,358.40,'cash','completed',NULL,'2026-06-10 15:35:21','2026-06-10 15:35:27'),(15,'TXN-20260610-KBA0JP',35.00,4.20,0.00,39.20,'cash','completed',NULL,'2026-06-10 15:35:51','2026-06-10 15:40:53');
-/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -522,18 +405,8 @@ CREATE TABLE `users` (
   UNIQUE KEY `users_username_unique` (`username`),
   KEY `users_role_id_foreign` (`role_id`),
   CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'System Administrator','admin@grocery.com','admin','$2y$12$uCaYc5ODPzlHUx8Bvn8rZunJDtA0I7WswHMzp/5uyF.LSVbscM7YW',1,NULL,1,'2026-06-10 15:01:38',NULL,'2026-06-10 04:59:55','2026-06-10 15:01:38'),(2,'Inventory Manager','manager@grocery.com','manager','$2y$12$KxGxBPsq4X298L3TndLCH.HcKEpH0hcC66Lk4zIEv9jr4k.mp0eDW',2,NULL,1,NULL,NULL,'2026-06-10 04:59:55','2026-06-10 04:59:55'),(3,'System Auditor','auditor@grocery.com','auditor','$2y$12$IpacvHAM/G9c3fVas3u4PepwSeN6gOTwbYK9.TVOQdeiupuDgNU0C',3,NULL,1,'2026-06-10 15:00:56',NULL,'2026-06-10 04:59:56','2026-06-10 15:00:56');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -544,4 +417,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-10 23:47:23
+-- Dump completed on 2026-06-11 15:04:41

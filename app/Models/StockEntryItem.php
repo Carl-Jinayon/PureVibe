@@ -19,6 +19,7 @@ class StockEntryItem extends Model
         'stock_entry_id',
         'product_id',
         'quantity',
+        'unit_cost',
         'notes',
     ];
 
@@ -30,7 +31,8 @@ class StockEntryItem extends Model
     protected function casts(): array
     {
         return [
-            'quantity' => 'integer',
+            'quantity'  => 'integer',
+            'unit_cost' => 'decimal:2',
         ];
     }
 

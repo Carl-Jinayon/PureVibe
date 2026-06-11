@@ -59,6 +59,10 @@
                         <span class="fw-semibold">{{ $product->supplier->name ?? 'None' }}</span>
                     </li>
                     <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Supplier Cost</span>
+                        <span class="fw-semibold text-primary">₱{{ number_format($product->cost_price, 2) }}</span>
+                    </li>
+                    <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
                         <span class="text-muted">Barcode</span>
                         <span class="fw-semibold">{{ $product->barcode ?? '-' }}</span>
                     </li>

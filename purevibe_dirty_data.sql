@@ -1,9 +1,13 @@
 -- =========================================================================
 -- DCIT 55A: PureVibe "Dirty Data" Seed Script
--- WARNING: This script clears your current tables and inserts 100+ records
+-- WARNING: This script clears your current tables and inserts records
 -- containing intentional data quality issues for assessment and cleaning.
+-- Issues included: NULL prices, negative stock, inconsistent casing, duplicate SKUs.
 -- =========================================================================
 
+-- Temporarily disable strict mode so NULL values can be inserted into NOT NULL columns.
+-- This is intentional — the dirty data demonstrates data quality issues.
+SET sql_mode = '';
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. Wipe existing data
@@ -11,6 +15,7 @@ TRUNCATE TABLE transaction_items;
 TRUNCATE TABLE transactions;
 TRUNCATE TABLE inventory_movements;
 TRUNCATE TABLE stock_entries;
+TRUNCATE TABLE supplier_product_prices;
 TRUNCATE TABLE products;
 TRUNCATE TABLE suppliers;
 TRUNCATE TABLE categories;
@@ -129,46 +134,48 @@ INSERT INTO products (id, sku, name, description, unit_price, current_stock, low
 -- =========================================================================
 -- 5. INSERT TRANSACTIONS (15 Records)
 -- =========================================================================
-INSERT INTO transactions (id, transaction_number, subtotal, tax_amount, discount_amount, total_amount, payment_method, amount_tendered, change_amount, status, user_id, customer_name, created_at, updated_at) VALUES
-(1, 'TXN-0001', 450.00, 0, 0, 450.00, 'cash', 500.00, 50.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 14 DAY), DATE_SUB(NOW(), INTERVAL 14 DAY)),
-(2, 'TXN-0002', 1200.00, 0, 0, 1200.00, 'card', 1200.00, 0.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 12 DAY), DATE_SUB(NOW(), INTERVAL 12 DAY)),
-(3, 'TXN-0003', 3500.00, 0, 0, 3500.00, 'cash', 4000.00, 500.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 10 DAY), DATE_SUB(NOW(), INTERVAL 10 DAY)),
-(4, 'TXN-0004', 150.00, 0, 0, 150.00, 'gcash', 150.00, 0.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 9 DAY), DATE_SUB(NOW(), INTERVAL 9 DAY)),
-(5, 'TXN-0005', 850.00, 0, 0, 850.00, 'cash', 1000.00, 150.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 8 DAY), DATE_SUB(NOW(), INTERVAL 8 DAY)),
-(6, 'TXN-0006', 4500.00, 0, 0, 4500.00, 'card', 4500.00, 0.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 7 DAY), DATE_SUB(NOW(), INTERVAL 7 DAY)),
-(7, 'TXN-0007', 40.00, 0, 0, 40.00, 'cash', 50.00, 10.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 6 DAY), DATE_SUB(NOW(), INTERVAL 6 DAY)),
-(8, 'TXN-0008', 220.00, 0, 0, 220.00, 'gcash', 220.00, 0.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 5 DAY), DATE_SUB(NOW(), INTERVAL 5 DAY)),
-(9, 'TXN-0009', 350.00, 0, 0, 350.00, 'cash', 500.00, 150.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 4 DAY), DATE_SUB(NOW(), INTERVAL 4 DAY)),
-(10, 'TXN-0010', 250.00, 0, 0, 250.00, 'cash', 250.00, 0.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY)),
-(11, 'TXN-0011', 350.00, 0, 0, 350.00, 'card', 350.00, 0.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 2 DAY), DATE_SUB(NOW(), INTERVAL 2 DAY)),
-(12, 'TXN-0012', 45.00, 0, 0, 45.00, 'cash', 50.00, 5.00, 'completed', NULL, NULL, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY)),
-(13, 'TXN-0013', 380.00, 0, 0, 380.00, 'gcash', 380.00, 0.00, 'completed', NULL, NULL, NOW(), NOW()),
-(14, 'TXN-0014', 150.00, 0, 0, 150.00, 'cash', 200.00, 50.00, 'pending', NULL, NULL, NOW(), NOW()),
-(15, 'TXN-0015', 1800.00, 0, 0, 1800.00, 'card', 1800.00, 0.00, 'pending', NULL, NULL, NOW(), NOW());
+INSERT INTO transactions (id, transaction_number, subtotal, tax_amount, discount_amount, total_amount, payment_method, status, created_at, updated_at) VALUES
+(1, 'TXN-0001', 450.00, 0, 0, 450.00, 'cash', 'completed', DATE_SUB(NOW(), INTERVAL 14 DAY), DATE_SUB(NOW(), INTERVAL 14 DAY)),
+(2, 'TXN-0002', 1200.00, 0, 0, 1200.00, 'card', 'completed', DATE_SUB(NOW(), INTERVAL 12 DAY), DATE_SUB(NOW(), INTERVAL 12 DAY)),
+(3, 'TXN-0003', 3500.00, 0, 0, 3500.00, 'cash', 'completed', DATE_SUB(NOW(), INTERVAL 10 DAY), DATE_SUB(NOW(), INTERVAL 10 DAY)),
+(4, 'TXN-0004', 150.00, 0, 0, 150.00, 'gcash', 'completed', DATE_SUB(NOW(), INTERVAL 9 DAY), DATE_SUB(NOW(), INTERVAL 9 DAY)),
+(5, 'TXN-0005', 850.00, 0, 0, 850.00, 'cash', 'completed', DATE_SUB(NOW(), INTERVAL 8 DAY), DATE_SUB(NOW(), INTERVAL 8 DAY)),
+(6, 'TXN-0006', 4500.00, 0, 0, 4500.00, 'card', 'completed', DATE_SUB(NOW(), INTERVAL 7 DAY), DATE_SUB(NOW(), INTERVAL 7 DAY)),
+(7, 'TXN-0007', 40.00, 0, 0, 40.00, 'cash', 'completed', DATE_SUB(NOW(), INTERVAL 6 DAY), DATE_SUB(NOW(), INTERVAL 6 DAY)),
+(8, 'TXN-0008', 220.00, 0, 0, 220.00, 'gcash', 'completed', DATE_SUB(NOW(), INTERVAL 5 DAY), DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(9, 'TXN-0009', 350.00, 0, 0, 350.00, 'cash', 'completed', DATE_SUB(NOW(), INTERVAL 4 DAY), DATE_SUB(NOW(), INTERVAL 4 DAY)),
+(10, 'TXN-0010', 250.00, 0, 0, 250.00, 'cash', 'completed', DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY)),
+(11, 'TXN-0011', 350.00, 0, 0, 350.00, 'card', 'completed', DATE_SUB(NOW(), INTERVAL 2 DAY), DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(12, 'TXN-0012', 45.00, 0, 0, 45.00, 'cash', 'completed', DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(13, 'TXN-0013', 380.00, 0, 0, 380.00, 'gcash', 'completed', NOW(), NOW()),
+(14, 'TXN-0014', 150.00, 0, 0, 150.00, 'cash', 'pending', NOW(), NOW()),
+(15, 'TXN-0015', 1800.00, 0, 0, 1800.00, 'card', 'pending', NOW(), NOW());
 
 -- =========================================================================
 -- 6. INSERT TRANSACTION ITEMS (20 Records)
 -- =========================================================================
-INSERT INTO transaction_items (id, transaction_id, product_id, product_name, product_sku, quantity, unit_price, subtotal, created_at, updated_at) VALUES
-(1, 1, 1, 'Wireless Mouse', 'SKU-001', 1, 450.00, 450.00, NOW(), NOW()),
-(2, 2, 2, 'Mechanical Keyboard', 'SKU-002', 1, 1200.00, 1200.00, NOW(), NOW()),
-(3, 3, 3, 'Office Chair', 'SKU-003', 1, 3500.00, 3500.00, NOW(), NOW()),
-(4, 4, 11, 'T-Shirt', 'SKU-011', 1, 150.00, 150.00, NOW(), NOW()),
-(5, 5, 12, 'Jeans', 'SKU-012', 1, 850.00, 850.00, NOW(), NOW()),
-(6, 6, 4, 'Wooden Desk', 'SKU-004', 1, 4500.00, 4500.00, NOW(), NOW()),
-(7, 7, 5, 'Apple', 'SKU-005', 1, 25.00, 25.00, NOW(), NOW()),
-(8, 7, 6, 'Banana', 'SKU-006', 1, 15.00, 15.00, NOW(), NOW()),
-(9, 8, 14, 'Face Wash', 'SKU-014', 1, 220.00, 220.00, NOW(), NOW()),
-(10, 9, 16, 'Coffee Beans', 'SKU-015', 1, 350.00, 350.00, NOW(), NOW()),
-(11, 10, 18, 'Printer Paper', 'SKU-018', 1, 250.00, 250.00, NOW(), NOW()),
-(12, 11, 19, 'Stapler', 'SKU-019', 1, 350.00, 350.00, NOW(), NOW()),
-(13, 12, 20, 'Sticky Notes', 'SKU-020', 1, 45.00, 45.00, NOW(), NOW()),
-(14, 13, 21, 'USB Flash Drive', 'SKU-021', 1, 380.00, 380.00, NOW(), NOW()),
-(15, 14, 22, 'HDMI Cable', 'SKU-022', 1, 150.00, 150.00, NOW(), NOW()),
-(16, 15, 23, 'Webcam', 'SKU-023', 1, 1800.00, 1800.00, NOW(), NOW()),
-(17, 10, 5, 'Apple', 'SKU-005', 2, 25.00, 50.00, NOW(), NOW()),
-(18, 11, 6, 'Banana', 'SKU-006', 3, 15.00, 45.00, NOW(), NOW()),
-(19, 12, 35, 'Highlighter', 'SKU-035', 1, 35.00, 35.00, NOW(), NOW()),
-(20, 13, 36, 'Paper Clips', 'SKU-036', 1, 25.00, 25.00, NOW(), NOW());
+INSERT INTO transaction_items (id, transaction_id, product_id, product_name, quantity, unit_price, subtotal, created_at, updated_at) VALUES
+(1, 1, 1, 'Wireless Mouse', 1, 450.00, 450.00, NOW(), NOW()),
+(2, 2, 2, 'Mechanical Keyboard', 1, 1200.00, 1200.00, NOW(), NOW()),
+(3, 3, 3, 'Office Chair', 1, 3500.00, 3500.00, NOW(), NOW()),
+(4, 4, 11, 'T-Shirt', 1, 150.00, 150.00, NOW(), NOW()),
+(5, 5, 12, 'Jeans', 1, 850.00, 850.00, NOW(), NOW()),
+(6, 6, 4, 'Wooden Desk', 1, 4500.00, 4500.00, NOW(), NOW()),
+(7, 7, 5, 'Apple', 1, 25.00, 25.00, NOW(), NOW()),
+(8, 7, 6, 'Banana', 1, 15.00, 15.00, NOW(), NOW()),
+(9, 8, 14, 'Face Wash', 1, 220.00, 220.00, NOW(), NOW()),
+(10, 9, 16, 'Coffee Beans', 1, 350.00, 350.00, NOW(), NOW()),
+(11, 10, 18, 'Printer Paper', 1, 250.00, 250.00, NOW(), NOW()),
+(12, 11, 19, 'Stapler', 1, 350.00, 350.00, NOW(), NOW()),
+(13, 12, 20, 'Sticky Notes', 1, 45.00, 45.00, NOW(), NOW()),
+(14, 13, 21, 'USB Flash Drive', 1, 380.00, 380.00, NOW(), NOW()),
+(15, 14, 22, 'HDMI Cable', 1, 150.00, 150.00, NOW(), NOW()),
+(16, 15, 23, 'Webcam', 1, 1800.00, 1800.00, NOW(), NOW()),
+(17, 10, 5, 'Apple', 2, 25.00, 50.00, NOW(), NOW()),
+(18, 11, 6, 'Banana', 3, 15.00, 45.00, NOW(), NOW()),
+(19, 12, 35, 'Highlighter', 1, 35.00, 35.00, NOW(), NOW()),
+(20, 13, 36, 'Paper Clips', 1, 25.00, 25.00, NOW(), NOW());
 
 SET FOREIGN_KEY_CHECKS = 1;
+-- Restore strict SQL mode after dirty data import
+SET sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';

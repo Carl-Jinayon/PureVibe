@@ -95,14 +95,37 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-4">
-                        <label for="unit_price" class="form-label fw-semibold">Unit Price (₱) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" min="0" class="form-control form-control-custom @error('unit_price') is-invalid @enderror" id="unit_price" name="unit_price" value="{{ old('unit_price') }}" required>
+                        <label for="cost_price" class="form-label fw-semibold">Supplier Cost (&#8369;)</label>
+                        <input type="number" step="0.01" min="0" class="form-control form-control-custom @error('cost_price') is-invalid @enderror" id="cost_price" name="cost_price" value="{{ old('cost_price') }}" placeholder="0.00" oninput="recalcSellingPrice()">
+                        @error('cost_price')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="text-muted">What you pay the supplier per unit.</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="markup_percentage" class="form-label fw-semibold">Markup % <span class="text-muted fw-normal small">(optional)</span></label>
+                        <div class="input-group">
+                            <input type="number" step="0.01" min="0" class="form-control form-control-custom @error('markup_percentage') is-invalid @enderror" id="markup_percentage" name="markup_percentage" value="{{ old('markup_percentage') }}" placeholder="{{ $globalMarkup }}" oninput="recalcSellingPrice()">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        @error('markup_percentage')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="text-muted">Leave blank to use global ({{ $globalMarkup }}%).</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="unit_price" class="form-label fw-semibold">Selling Price (&#8369;) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" min="0" class="form-control form-control-custom @error('unit_price') is-invalid @enderror" id="unit_price" name="unit_price" value="{{ old('unit_price') }}" required placeholder="Auto-calculated">
                         @error('unit_price')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <small class="text-muted" id="priceHint">Or enter manually.</small>
                     </div>
+                </div>
+
+                <div class="row mb-4">
                     <div class="col-md-4">
                         <label for="unit" class="form-label fw-semibold">Unit Type</label>
                         <select class="form-select form-control-custom @error('unit') is-invalid @enderror" id="unit" name="unit">
@@ -115,6 +138,7 @@
                         @enderror
                     </div>
                 </div>
+
 
                 <div class="row mb-4">
                     <div class="col-md-4">
@@ -221,5 +245,21 @@
         }
         document.getElementById('barcode').value = barcode;
     });
+
+    // Auto-calculate selling price from cost + markup
+    window.recalcSellingPrice = function() {
+        const cost   = parseFloat(document.getElementById('cost_price').value) || 0;
+        const mkpRaw = document.getElementById('markup_percentage').value;
+        const globalMarkup = {{ $globalMarkup }};
+        const markup = mkpRaw !== '' ? parseFloat(mkpRaw) : globalMarkup;
+
+        if (cost > 0) {
+            const selling = cost * (1 + markup / 100);
+            document.getElementById('unit_price').value = selling.toFixed(2);
+            document.getElementById('priceHint').textContent =
+                '₱' + cost.toFixed(2) + ' × ' + (1 + markup/100).toFixed(4) + ' = ₱' + selling.toFixed(2);
+        }
+    };
 </script>
 @endsection
+

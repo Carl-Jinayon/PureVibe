@@ -60,14 +60,32 @@
         </div>
     </div>
 
-    <!-- Products from this Supplier -->
+    <!-- Right Side (Tabs) -->
     <div class="col-lg-8">
-        <div class="glass-card">
-            <div class="card-header-gradient d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="bi bi-box-seam me-2"></i>Products from this Supplier</h5>
-                <span class="badge bg-white bg-opacity-25 text-white">{{ $products->count() }} Products</span>
-            </div>
-            <div class="p-0">
+        <div class="glass-card mb-4">
+            <ul class="nav nav-tabs nav-tabs-custom border-bottom-0" id="supplierTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fw-semibold d-flex align-items-center gap-2" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-box-seam"></i> Products
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-semibold d-flex align-items-center gap-2" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-clock-history"></i> Price History
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content" id="supplierTabContent">
+            <!-- Products Tab -->
+            <div class="tab-pane fade show active" id="products" role="tabpanel">
+                <div class="glass-card overflow-hidden">
+                    <div class="card-header-gradient d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-box-seam me-2"></i>Assigned Products</h5>
+                        <span class="badge bg-white bg-opacity-25 text-white">{{ $products->count() }} Products</span>
+                    </div>
+                    <div class="p-0">
                 <div class="table-responsive">
                     <table class="table table-custom mb-0">
                         <thead>
@@ -128,6 +146,78 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Price History Tab -->
+            <div class="tab-pane fade" id="history" role="tabpanel">
+                <div class="glass-card overflow-hidden">
+                    <div class="card-header-gradient d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Price History</h5>
+                    </div>
+                    <div class="p-0">
+                        <div class="table-responsive">
+                            <table class="table table-custom mb-0">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">Date</th>
+                                        <th width="25%">Product</th>
+                                        <th width="15%">Cost Price</th>
+                                        <th width="10%">Markup</th>
+                                        <th width="15%">Selling Price</th>
+                                        <th width="15%">Recorded By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($priceHistory as $history)
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold">{{ $history->created_at->format('M d, Y') }}</div>
+                                            <div class="small text-muted">{{ $history->created_at->format('h:i A') }}</div>
+                                        </td>
+                                        <td>
+                                            @if($history->product)
+                                                <a href="{{ route('admin.products.show', $history->product_id) }}" class="fw-semibold text-dark text-decoration-none">{{ $history->product->name }}</a>
+                                                <div class="small text-muted">{{ $history->product->sku }}</div>
+                                            @else
+                                                <span class="text-muted fst-italic">Product deleted</span>
+                                            @endif
+                                        </td>
+                                        <td class="fw-semibold text-primary">₱{{ number_format($history->cost_price, 2) }}</td>
+                                        <td>{{ number_format($history->markup_percentage, 0) }}%</td>
+                                        <td class="fw-bold">₱{{ number_format($history->selling_price, 2) }}</td>
+                                        <td>
+                                            @if($history->recordedBy)
+                                                {{ $history->recordedBy->name }}
+                                            @else
+                                                <span class="text-muted">System</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @if($history->reason)
+                                    <tr class="bg-light">
+                                        <td colspan="6" class="py-2 px-4 small text-muted border-top-0">
+                                            <i class="bi bi-arrow-return-right me-2"></i>{{ $history->reason }}
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 text-muted">
+                                            <i class="bi bi-clock fs-1 d-block mb-3 text-secondary opacity-50"></i>
+                                            <p class="mb-0">No price history recorded yet.</p>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        @if($priceHistory->hasPages())
+                            <div class="p-3 border-top">
+                                {{ $priceHistory->links() }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

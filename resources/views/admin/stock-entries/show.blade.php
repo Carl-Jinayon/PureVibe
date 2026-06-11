@@ -33,7 +33,7 @@
                     </li>
                     <li class="list-group-item bg-transparent px-0">
                         <span class="text-muted d-block small fw-semibold text-uppercase">Reference</span>
-                        <span class="fw-medium">{{ $entry->reference ?? '-' }}</span>
+                        <span class="fw-medium">{{ $entry->entry_number ?? '-' }}</span>
                     </li>
                     <li class="list-group-item bg-transparent px-0">
                         <span class="text-muted d-block small fw-semibold text-uppercase">Created By</span>

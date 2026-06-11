@@ -120,4 +120,40 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')
             ->with('success', 'User deleted successfully.');
     }
+
+    /**
+     * Show the profile edit form for the currently logged in user.
+     */
+    public function editSelf()
+    {
+        $user = auth()->user();
+        return view('admin.users.profile', compact('user'));
+    }
+
+    /**
+     * Update the currently logged in user's own profile.
+     */
+    public function updateSelf(Request $request)
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+        ]);
+
+        if ($request->filled('password')) {
+            $request->validate(['password' => 'required|string|min:8|confirmed']);
+            $validated['password'] = Hash::make($request->password);
+        }
+
+        $oldValues = $user->toArray();
+        $user->update($validated);
+
+        AuditLog::log('Updated own profile', $user, $oldValues, $user->toArray());
+
+        return redirect()->route('admin.profile.edit')
+            ->with('success', 'Your profile has been updated successfully.');
+    }
 }

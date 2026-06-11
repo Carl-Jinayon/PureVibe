@@ -73,9 +73,13 @@ class SqlRunnerController extends Controller
                 $afterResults = [];
                 $modHeaders = [];
 
-                if ($tableName && $whereClause) {
+                if ($tableName) {
                     try {
-                        $selectQuery = "SELECT * FROM {$tableName} WHERE {$whereClause}";
+                        // Build the SELECT query — use WHERE clause if present, otherwise show all rows (capped at 50)
+                        $selectQuery = $whereClause
+                            ? "SELECT * FROM {$tableName} WHERE {$whereClause} LIMIT 50"
+                            : "SELECT * FROM {$tableName} LIMIT 50";
+
                         $beforeData = DB::select($selectQuery);
                         $beforeResults = array_map(function ($item) { return (array) $item; }, $beforeData);
                         if (count($beforeResults) > 0) {
@@ -86,11 +90,19 @@ class SqlRunnerController extends Controller
 
                 $affectedRows = DB::update($query);
                 
-                if ($tableName && $whereClause && $isUpdate) {
+                if ($tableName && $isUpdate) {
                     try {
-                        $selectQuery = "SELECT * FROM {$tableName} WHERE {$whereClause}";
+                        // Same logic — use WHERE if present, otherwise show all rows (capped at 50)
+                        $selectQuery = $whereClause
+                            ? "SELECT * FROM {$tableName} WHERE {$whereClause} LIMIT 50"
+                            : "SELECT * FROM {$tableName} LIMIT 50";
+
                         $afterData = DB::select($selectQuery);
                         $afterResults = array_map(function ($item) { return (array) $item; }, $afterData);
+                        // Ensure headers are set even if beforeResults was empty
+                        if (empty($modHeaders) && count($afterResults) > 0) {
+                            $modHeaders = array_keys($afterResults[0]);
+                        }
                     } catch (\Exception $e) {}
                 }
 

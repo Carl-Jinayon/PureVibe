@@ -12,6 +12,17 @@
 
 <form action="{{ route('admin.stock-entries.store') }}" method="POST" id="stockEntryForm">
     @csrf
+
+    @if ($errors->any())
+        <div class="alert alert-danger mb-4 shadow-sm">
+            <h6 class="fw-bold mb-2"><i class="bi bi-exclamation-triangle me-2"></i>Please fix the following errors:</h6>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     
     <div class="row g-4">
         <!-- Entry Details -->
@@ -20,9 +31,9 @@
                 <h5 class="mb-4 fw-semibold border-bottom pb-2">Entry Details</h5>
                 
                 <div class="mb-4">
-                    <label for="supplier_id" class="form-label fw-semibold">Supplier</label>
-                    <select class="form-select form-control-custom @error('supplier_id') is-invalid @enderror" id="supplier_id" name="supplier_id">
-                        <option value="">Select Supplier (Optional)</option>
+                    <label for="supplier_id" class="form-label fw-semibold">Supplier <span class="text-danger">*</span></label>
+                    <select class="form-select form-control-custom @error('supplier_id') is-invalid @enderror" id="supplier_id" name="supplier_id" required>
+                        <option value="">Select Supplier...</option>
                         @foreach($suppliers ?? [] as $supplier)
                             <option value="{{ $supplier->id }}" {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>
                                 {{ $supplier->name }}
@@ -82,7 +93,7 @@
                                     <select class="form-select product-select" disabled>
                                         <option value="">Select Product...</option>
                                         @foreach($products ?? [] as $product)
-                                            <option value="{{ $product->id }}" data-sku="{{ $product->sku }}" data-supplier="{{ $product->supplier_id }}">
+                                            <option value="{{ $product->id }}" data-sku="{{ $product->sku }}" data-supplier="{{ $product->supplier_id }}" data-cost="{{ $product->cost_price ?? 0 }}">
                                                 {{ $product->name }} ({{ $product->sku }})
                                             </option>
                                         @endforeach
@@ -92,7 +103,7 @@
                                     <input type="number" min="1" class="form-control qty-input" placeholder="Qty" disabled>
                                 </td>
                                 <td>
-                                    <input type="number" step="0.01" min="0" class="form-control cost-input" placeholder="Cost" disabled>
+                                    <input type="number" step="0.01" min="0" class="form-control cost-input bg-light" placeholder="Auto" readonly disabled>
                                 </td>
                                 <td class="text-center align-middle">
                                     <button type="button" class="btn btn-sm btn-outline-danger remove-item">
@@ -107,7 +118,7 @@
                                     <select class="form-select product-select" name="items[0][product_id]" required>
                                         <option value="">Select Product...</option>
                                         @foreach($products ?? [] as $product)
-                                            <option value="{{ $product->id }}" data-supplier="{{ $product->supplier_id }}">
+                                            <option value="{{ $product->id }}" data-supplier="{{ $product->supplier_id }}" data-cost="{{ $product->cost_price ?? 0 }}">
                                                 {{ $product->name }} ({{ $product->sku }})
                                             </option>
                                         @endforeach
@@ -117,7 +128,7 @@
                                     <input type="number" min="1" class="form-control qty-input" name="items[0][quantity]" placeholder="Qty" required>
                                 </td>
                                 <td>
-                                    <input type="number" step="0.01" min="0" class="form-control cost-input" name="items[0][unit_cost]" placeholder="Cost (Optional)">
+                                    <input type="number" step="0.01" min="0" class="form-control cost-input bg-light" name="items[0][unit_cost]" placeholder="Auto" readonly>
                                 </td>
                                 <td class="text-center align-middle">
                                     <button type="button" class="btn btn-sm btn-outline-danger remove-item" disabled>
@@ -228,7 +239,7 @@
                     if (option.value === "") return; // Skip placeholder
                     const optionSupplier = option.getAttribute('data-supplier');
                     
-                    if (!supplierId || optionSupplier === supplierId || !optionSupplier) {
+                    if (!supplierId || optionSupplier === supplierId) {
                         option.hidden = false;
                         if (option.value === currentVal) hasValidCurrentVal = true;
                     } else {
@@ -245,6 +256,38 @@
         supplierSelect.addEventListener('change', filterProductsBySupplier);
         // Initial run
         filterProductsBySupplier();
+        // Product selection auto-fills cost
+        container.addEventListener('change', function(e) {
+            if (e.target.classList.contains('product-select')) {
+                const select = e.target;
+                const row = select.closest('.item-row');
+                const costInput = row.querySelector('.cost-input');
+                const selectedOption = select.options[select.selectedIndex];
+                
+                if (selectedOption && selectedOption.value !== "") {
+                    const cost = selectedOption.getAttribute('data-cost');
+                    if (cost > 0) {
+                        costInput.value = parseFloat(cost).toFixed(2);
+                        costInput.readOnly = true;
+                        costInput.required = false;
+                        costInput.classList.add('bg-light');
+                        costInput.placeholder = "Auto";
+                    } else {
+                        costInput.value = '';
+                        costInput.readOnly = false;
+                        costInput.required = true;
+                        costInput.classList.remove('bg-light');
+                        costInput.placeholder = "Enter Cost";
+                    }
+                } else {
+                    costInput.value = '';
+                    costInput.readOnly = true;
+                    costInput.required = false;
+                    costInput.classList.add('bg-light');
+                    costInput.placeholder = "Auto";
+                }
+            }
+        });
     });
 </script>
 @endsection

@@ -25,6 +25,8 @@ class Product extends Model
         'image',
         'sku',
         'barcode',
+        'cost_price',
+        'markup_percentage',
         'unit_price',
         'current_stock',
         'low_stock_threshold',
@@ -40,11 +42,34 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'unit_price' => 'decimal:2',
-            'current_stock' => 'integer',
+            'cost_price'        => 'decimal:2',
+            'markup_percentage' => 'decimal:2',
+            'unit_price'        => 'decimal:2',
+            'current_stock'     => 'integer',
             'low_stock_threshold' => 'integer',
-            'is_active' => 'boolean',
+            'is_active'         => 'boolean',
         ];
+    }
+
+    /**
+     * Calculate the selling price from cost + markup.
+     * Falls back to the global setting if no per-product markup is set.
+     *
+     * @param float|null $costPrice      Override cost price (e.g. from a stock entry)
+     * @param float|null $markupOverride Override markup % (e.g. per-product value)
+     * @return float|null                NULL if no cost price is available
+     */
+    public function calculateSellingPrice(?float $costPrice = null, ?float $markupOverride = null): ?float
+    {
+        $cost   = $costPrice ?? (float) $this->cost_price;
+        if ($cost <= 0) return null;
+
+        $markup = $markupOverride
+            ?? (float) ($this->markup_percentage
+                ?? \App\Models\Setting::where('key', 'default_markup_percentage')->value('value')
+                ?? 20);
+
+        return round($cost * (1 + $markup / 100), 2);
     }
 
     /**
@@ -125,5 +150,13 @@ class Product extends Model
     public function getPriceAttribute(): mixed
     {
         return $this->unit_price;
+    }
+
+    /**
+     * Get the supplier price history for this product.
+     */
+    public function supplierPriceHistory()
+    {
+        return $this->hasMany(SupplierProductPrice::class)->latest();
     }
 }

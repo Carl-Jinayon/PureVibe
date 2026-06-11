@@ -60,4 +60,12 @@ class Supplier extends Model
     {
         return $this->hasMany(StockEntry::class);
     }
+
+    /**
+     * Get the price history records for this supplier.
+     */
+    public function productPrices(): HasMany
+    {
+        return $this->hasMany(SupplierProductPrice::class);
+    }
 }

@@ -461,7 +461,7 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                        <li><a class="dropdown-item" href="{{ route('admin.users.edit', auth()->id()) }}"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.profile.edit') }}"><i class="bi bi-person me-2"></i> Profile</a></li>
                         @if(auth()->user() && auth()->user()->hasRole(\App\Models\Role::ADMIN))
                             <li><a class="dropdown-item" href="{{ route('admin.settings.index') }}"><i class="bi bi-gear me-2"></i> Settings</a></li>
                         @endif
@@ -658,7 +658,47 @@
             }
         });
 
-        // Simple confirmation for all delete forms
+        // =====================================================
+        // Universal Live Search — auto-submit any filter form
+        // Works on all admin pages that use name="search" inputs
+        // =====================================================
+        (function() {
+            let liveSearchTimer = null;
+            const DEBOUNCE_MS = 400;
+
+            function submitForm(form) {
+                if (form) form.submit();
+            }
+
+            // Attach to all search text inputs across admin pages
+            document.querySelectorAll('form[method="get"] input[name="search"], form[method="GET"] input[name="search"]').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    clearTimeout(liveSearchTimer);
+                    const form = input.closest('form');
+                    liveSearchTimer = setTimeout(function() {
+                        submitForm(form);
+                    }, DEBOUNCE_MS);
+                });
+
+                // Submit immediately on Enter (no extra debounce delay)
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        clearTimeout(liveSearchTimer);
+                        submitForm(input.closest('form'));
+                    }
+                });
+            });
+
+            // Auto-submit when any filter dropdown changes
+            document.querySelectorAll('form[method="get"] select, form[method="GET"] select').forEach(function(select) {
+                select.addEventListener('change', function() {
+                    submitForm(select.closest('form'));
+                });
+            });
+        })();
+
+        // Confirmation for all delete forms
         function confirmDelete(message = 'Are you sure you want to delete this item?') {
             return confirm(message);
         }

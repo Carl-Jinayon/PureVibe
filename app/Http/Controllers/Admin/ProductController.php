@@ -7,7 +7,9 @@ use App\Models\AuditLog;
 use App\Models\Category;
 use App\Models\InventoryMovement;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Models\Supplier;
+use App\Models\SupplierProductPrice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -54,29 +56,45 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = Category::active()->get();
-        $suppliers = Supplier::active()->get();
-        return view('admin.products.create', compact('categories', 'suppliers'));
+        $categories  = Category::active()->get();
+        $suppliers   = Supplier::active()->get();
+        $globalMarkup = (float) (Setting::where('key', 'default_markup_percentage')->value('value') ?? 20);
+        return view('admin.products.create', compact('categories', 'suppliers', 'globalMarkup'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'nullable|exists:suppliers,id',
-            'image' => 'nullable|image|max:2048',
-            'sku' => 'nullable|string|max:50|unique:products',
-            'barcode' => 'nullable|string|max:50|unique:products',
-            'unit_price' => 'required|numeric|min:0',
-            'current_stock' => 'required|integer|min:0',
-            'low_stock_threshold' => 'required|integer|min:0',
-            'unit' => 'nullable|string|max:50',
-            'is_active' => 'boolean',
+            'name'               => 'required|string|max:255',
+            'description'        => 'nullable|string',
+            'category_id'        => 'required|exists:categories,id',
+            'supplier_id'        => 'nullable|exists:suppliers,id',
+            'image'              => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'sku'                => 'nullable|string|max:50|unique:products',
+            'barcode'            => 'nullable|string|max:50|unique:products',
+            'cost_price'         => 'nullable|numeric|min:0',
+            'markup_percentage'  => 'nullable|numeric|min:0|max:9999',
+            'unit_price'         => 'required|numeric|min:0',
+            'current_stock'      => 'required|integer|min:0',
+            'low_stock_threshold'=> 'required|integer|min:0',
+            'unit'               => 'nullable|string|max:50',
+            'is_active'          => 'boolean',
+        ], [
+            'image.uploaded' => 'The image failed to upload. It may exceed the maximum allowed size (2MB).',
+            'image.max'      => 'The image must not be greater than 2MB.',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+
+        // Auto-calculate selling price if cost_price is provided but unit_price not overridden
+        if (!empty($validated['cost_price']) && (float) $validated['cost_price'] > 0) {
+            $tmpProduct = new Product($validated);
+            $calculated = $tmpProduct->calculateSellingPrice();
+            // Only auto-fill if user left unit_price at default or it equals the old calculated value
+            if ($calculated && (float) $validated['unit_price'] === 0.0) {
+                $validated['unit_price'] = $calculated;
+            }
+        }
 
         if (empty($validated['sku'])) {
             $validated['sku'] = 'PRD-' . strtoupper(Str::random(8));
@@ -126,28 +144,55 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $categories = Category::active()->get();
-        $suppliers = Supplier::active()->get();
-        return view('admin.products.edit', compact('product', 'categories', 'suppliers'));
+        $categories   = Category::active()->get();
+        $suppliers    = Supplier::active()->get();
+        $globalMarkup = (float) (Setting::where('key', 'default_markup_percentage')->value('value') ?? 20);
+        $priceHistory = SupplierProductPrice::where('product_id', $product->id)
+            ->with('supplier', 'recordedBy')->latest()->take(10)->get();
+        return view('admin.products.edit', compact('product', 'categories', 'suppliers', 'globalMarkup', 'priceHistory'));
     }
 
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'nullable|exists:suppliers,id',
-            'image' => 'nullable|image|max:2048',
-            'sku' => 'required|string|max:50|unique:products,sku,' . $product->id,
-            'barcode' => 'nullable|string|max:50|unique:products,barcode,' . $product->id,
-            'unit_price' => 'required|numeric|min:0',
-            'low_stock_threshold' => 'required|integer|min:0',
-            'unit' => 'nullable|string|max:50',
-            'is_active' => 'boolean',
+            'name'               => 'required|string|max:255',
+            'description'        => 'nullable|string',
+            'category_id'        => 'required|exists:categories,id',
+            'supplier_id'        => 'nullable|exists:suppliers,id',
+            'image'              => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'sku'                => 'required|string|max:50|unique:products,sku,' . $product->id,
+            'barcode'            => 'nullable|string|max:50|unique:products,barcode,' . $product->id,
+            'cost_price'         => 'nullable|numeric|min:0',
+            'markup_percentage'  => 'nullable|numeric|min:0|max:9999',
+            'unit_price'         => 'required|numeric|min:0',
+            'low_stock_threshold'=> 'required|integer|min:0',
+            'unit'               => 'nullable|string|max:50',
+            'is_active'          => 'boolean',
+        ], [
+            'image.uploaded' => 'The image failed to upload. Please try again with a different file.',
+            'image.max'      => 'The image must not be greater than 10MB.',
+            'image.mimes'    => 'Only JPG, PNG, GIF, and WebP images are allowed.',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+
+        // If cost_price changed manually in the product form, record a price history entry
+        $newCost = !empty($validated['cost_price']) ? (float) $validated['cost_price'] : null;
+        $oldCost = (float) $product->cost_price;
+        if ($newCost && abs($newCost - $oldCost) > 0.0001) {
+            $markupUsed = !empty($validated['markup_percentage'])
+                ? (float) $validated['markup_percentage']
+                : (float) (Setting::where('key', 'default_markup_percentage')->value('value') ?? 20);
+            SupplierProductPrice::create([
+                'supplier_id'       => $product->supplier_id,
+                'product_id'        => $product->id,
+                'cost_price'        => $newCost,
+                'selling_price'     => (float) $validated['unit_price'],
+                'markup_percentage' => $markupUsed,
+                'reason'            => 'Manual update via product form',
+                'recorded_by'       => auth()->id(),
+            ]);
+        }
 
         if (empty($validated['barcode'])) {
             $validated['barcode'] = mt_rand(100000000000, 999999999999);
