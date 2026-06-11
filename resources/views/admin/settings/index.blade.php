@@ -120,16 +120,7 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <div class="form-check form-switch fs-5 mb-3">
-                        <input name="enable_sound" value="1" class="form-check-input" type="checkbox" role="switch" {{ isset($settings['enable_sound']) && $settings['enable_sound'] ? 'checked' : (!isset($settings['enable_sound']) ? 'checked' : '') }}>
-                        <label class="form-check-label fs-6 mt-1 ms-2">Enable Sound Effects</label>
-                    </div>
-                    <div class="form-check form-switch fs-5">
-                        <input name="allow_guest" value="1" class="form-check-input" type="checkbox" role="switch" {{ isset($settings['allow_guest']) && $settings['allow_guest'] ? 'checked' : (!isset($settings['allow_guest']) ? 'checked' : '') }}>
-                        <label class="form-check-label fs-6 mt-1 ms-2">Allow Guest Checkout</label>
-                    </div>
-                </div>
+
             </div>
             
         </form>

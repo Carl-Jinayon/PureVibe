@@ -22,7 +22,7 @@ class KioskController extends Controller
 
     public function products(Request $request)
     {
-        $query = Product::active()->inStock();
+        $query = Product::active();
 
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);

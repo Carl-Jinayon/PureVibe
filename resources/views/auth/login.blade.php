@@ -189,11 +189,14 @@
                     @enderror
                 </div>
 
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <label class="form-check-label text-light" for="remember" style="opacity: 0.8; font-size: 0.9rem;">
-                        Remember me
-                    </label>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <label class="form-check-label text-light" for="remember" style="opacity: 0.8; font-size: 0.9rem;">
+                            Remember me
+                        </label>
+                    </div>
+                    <a href="#" class="text-light text-decoration-none" style="opacity: 0.8; font-size: 0.9rem;" onclick="alert('Please contact your administrator to reset your password.')">Forgot password?</a>
                 </div>
 
                 <button type="submit" class="btn btn-login">

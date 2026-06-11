@@ -103,7 +103,7 @@
                 <div class="glass-card p-4 h-100">
                     <h5 class="fw-semibold mb-3">Description</h5>
                     @if($product->description)
-                        <p class="text-muted">{{ $product->description }}</p>
+                        <p class="text-muted text-wrap text-break">{{ $product->description }}</p>
                     @else
                         <p class="text-muted font-italic">No description provided.</p>
                     @endif

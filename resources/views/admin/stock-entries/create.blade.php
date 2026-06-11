@@ -36,9 +36,12 @@
 
                 <div class="mb-4">
                     <label for="reference" class="form-label fw-semibold">Reference Number</label>
-                    <input type="text" class="form-control form-control-custom @error('reference') is-invalid @enderror" id="reference" name="reference" value="{{ old('reference') }}" placeholder="Invoice or PO number">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-custom @error('reference') is-invalid @enderror" id="reference" name="reference" value="{{ old('reference') }}" placeholder="Invoice or PO number">
+                        <button class="btn btn-outline-secondary border" type="button" onclick="generateReference()" title="Auto-generate"><i class="bi bi-arrow-repeat"></i></button>
+                    </div>
                     @error('reference')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -143,7 +146,20 @@
 
 @section('scripts')
 <script>
+    // Make generateReference globally available
+    window.generateReference = function() {
+        const prefix = 'SE-';
+        const date = new Date().toISOString().slice(0,10).replace(/-/g,'');
+        const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+        document.getElementById('reference').value = prefix + date + '-' + random;
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
+        // Auto-generate reference on load if empty
+        if (!document.getElementById('reference').value) {
+            window.generateReference();
+        }
+
         let itemCount = 1;
         const container = document.getElementById('itemsContainer');
         const template = document.querySelector('.item-row.template');

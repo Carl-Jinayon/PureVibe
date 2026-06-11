@@ -322,6 +322,7 @@
                     <i class="bi bi-speedometer2"></i> <span class="d-inline">Dashboard</span>
                 </a>
             </li>
+            @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isInventoryManager()))
             <li class="nav-item">
                 <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                     <i class="bi bi-box-seam"></i> <span class="d-inline">Products</span>
@@ -355,6 +356,7 @@
                     <i class="bi bi-plus-circle"></i> <span class="d-inline">Stock Entries</span>
                 </a>
             </li>
+            @endif
 
             <li class="nav-item {{ request()->routeIs('admin.reports.*') ? 'show' : '' }}">
                 <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#reportsMenu">
@@ -375,11 +377,13 @@
                 <span class="nav-link text-uppercase fw-bold" style="font-size: 0.75rem; color: #a5b4fc; letter-spacing: 0.05em;">DCIT 55A Project</span>
             </li>
             
+            @if(auth()->check() && auth()->user()->isAdmin())
             <li class="nav-item">
                 <a href="{{ route('admin.sql-runner.index') }}" class="nav-link {{ request()->routeIs('admin.sql-runner.*') ? 'active' : '' }}" style="border-left-color: #22c55e;">
                     <i class="bi bi-terminal" style="color: #4ade80;"></i> <span class="d-inline" style="color: #4ade80;">SQL Runner</span>
                 </a>
             </li>
+            @endif
 
             @if(auth()->check() && (method_exists(auth()->user(), 'isAdmin') ? auth()->user()->isAdmin() : auth()->user()->role === 'admin'))
             <li class="nav-item">
@@ -389,11 +393,13 @@
             </li>
             @endif
 
+            @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isAuditor()))
             <li class="nav-item">
                 <a href="{{ route('admin.audit-logs.index') }}" class="nav-link {{ request()->routeIs('admin.audit-logs.*') ? 'active' : '' }}">
                     <i class="bi bi-journal-text"></i> <span class="d-inline">Audit Logs</span>
                 </a>
             </li>
+            @endif
 
             @if(auth()->check() && (method_exists(auth()->user(), 'isAdmin') ? auth()->user()->isAdmin() : auth()->user()->role === 'admin'))
             <li class="nav-item">
@@ -422,9 +428,12 @@
                 <button class="toggle-btn" id="sidebarToggle">
                     <i class="bi bi-list"></i>
                 </button>
-                <div class="position-relative d-none d-md-block">
+                <div class="position-relative d-none d-md-block" id="globalSearchContainer">
                     <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="z-index:5; pointer-events:none;"></i>
-                    <input type="text" class="form-control form-control-custom rounded-pill" placeholder="Search..." style="width: 250px; padding-left: 2.2rem;">
+                    <input type="text" id="globalSearchInput" class="form-control form-control-custom rounded-pill" placeholder="Search..." style="width: 250px; padding-left: 2.2rem;" autocomplete="off">
+                    <ul class="dropdown-menu w-100 shadow-sm" id="globalSearchDropdown" style="position: absolute; top: 100%; left: 0; margin-top: 0.5rem; border-radius: 12px; border: 1px solid var(--glass-border); max-height: 300px; overflow-y: auto;">
+                        <!-- Suggestions will be injected here -->
+                    </ul>
                 </div>
             </div>
 
@@ -452,8 +461,10 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.settings.index') }}"><i class="bi bi-gear me-2"></i> Settings</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.users.edit', auth()->id()) }}"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        @if(auth()->user() && auth()->user()->hasRole(\App\Models\Role::ADMIN))
+                            <li><a class="dropdown-item" href="{{ route('admin.settings.index') }}"><i class="bi bi-gear me-2"></i> Settings</a></li>
+                        @endif
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{{ route('admin.logout') }}" method="POST">
@@ -508,6 +519,89 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Navigation Search with Dropdown
+            const searchInput = document.getElementById('globalSearchInput');
+            const searchDropdown = document.getElementById('globalSearchDropdown');
+            const searchContainer = document.getElementById('globalSearchContainer');
+
+            if (searchInput) {
+                const routes = [
+                    { name: 'Dashboard', url: '{{ route("admin.dashboard") }}', icon: 'bi-speedometer2' },
+                    @if(auth()->check() && !auth()->user()->isAuditor())
+                    { name: 'Products', url: '{{ route("admin.products.index") }}', icon: 'bi-box-seam' },
+                    { name: 'Categories', url: '{{ route("admin.categories.index") }}', icon: 'bi-tags' },
+                    { name: 'Suppliers', url: '{{ route("admin.suppliers.index") }}', icon: 'bi-truck' },
+                    { name: 'Inventory', url: '{{ route("admin.inventory.index") }}', icon: 'bi-clipboard-data' },
+                    { name: 'Stock Entries', url: '{{ route("admin.stock-entries.index") }}', icon: 'bi-plus-circle' },
+                    @endif
+                    { name: 'Reports', url: '{{ route("admin.reports.index") }}', icon: 'bi-graph-up' },
+                    { name: 'Transactions', url: '{{ route("admin.reports.transactions") }}', icon: 'bi-receipt' },
+                    @if(auth()->check() && auth()->user()->isAdmin())
+                    { name: 'Users', url: '{{ route("admin.users.index") }}', icon: 'bi-people' },
+                    { name: 'Settings', url: '{{ route("admin.settings.index") }}', icon: 'bi-gear' },
+                    { name: 'SQL Runner', url: '{{ route("admin.sql-runner.index") }}', icon: 'bi-terminal' },
+                    @endif
+                    @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isAuditor()))
+                    { name: 'Audit Logs', url: '{{ route("admin.audit-logs.index") }}', icon: 'bi-journal-text' },
+                    @endif
+                    { name: 'Kiosk', url: '{{ route("kiosk.index") }}', icon: 'bi-basket2-fill' }
+                ];
+
+                function renderSuggestions(searchTerm) {
+                    searchDropdown.innerHTML = '';
+                    const term = searchTerm.toLowerCase().trim();
+                    if (term.length === 0) {
+                        searchDropdown.classList.remove('show');
+                        return;
+                    }
+
+                    const filtered = routes.filter(r => r.name.toLowerCase().includes(term));
+
+                    if (filtered.length > 0) {
+                        filtered.forEach(route => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `<a class="dropdown-item d-flex align-items-center py-2" href="${route.url}">
+                                <i class="bi ${route.icon} me-2 text-muted"></i> 
+                                <span>${route.name.replace(new RegExp(term, 'gi'), match => `<strong>${match}</strong>`)}</span>
+                            </a>`;
+                            searchDropdown.appendChild(li);
+                        });
+                        searchDropdown.classList.add('show');
+                    } else {
+                        searchDropdown.innerHTML = '<li class="px-3 py-2 text-muted small">No matching sections found.</li>';
+                        searchDropdown.classList.add('show');
+                    }
+                }
+
+                searchInput.addEventListener('input', function() {
+                    renderSuggestions(this.value);
+                });
+
+                searchInput.addEventListener('focus', function() {
+                    if (this.value.trim().length > 0) {
+                        renderSuggestions(this.value);
+                    }
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!searchContainer.contains(e.target)) {
+                        searchDropdown.classList.remove('show');
+                    }
+                });
+
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const term = this.value.toLowerCase().trim();
+                        const match = routes.find(r => r.name.toLowerCase().includes(term));
+                        if (match) {
+                            window.location.href = match.url;
+                        }
+                    }
+                });
+            }
+
             // Sidebar Toggle Logic
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');

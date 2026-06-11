@@ -48,7 +48,7 @@
                 @if($entry->notes)
                 <div class="mt-4 p-3 bg-light rounded border border-light">
                     <span class="text-muted d-block small fw-semibold text-uppercase mb-1">Notes</span>
-                    <p class="mb-0 small">{{ $entry->notes }}</p>
+                    <p class="mb-0 small text-wrap text-break">{{ $entry->notes }}</p>
                 </div>
                 @endif
             </div>

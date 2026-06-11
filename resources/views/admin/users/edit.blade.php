@@ -65,17 +65,18 @@
 
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <label for="role" class="form-label fw-semibold">User Role <span class="text-danger">*</span></label>
-                        <select class="form-select form-control-custom @error('role') is-invalid @enderror" id="role" name="role" required {{ auth()->id() == $user->id ? 'disabled' : '' }}>
-                            @foreach($roles ?? ['admin' => 'Administrator', 'staff' => 'Staff', 'auditor' => 'Auditor'] as $value => $label)
-                                <option value="{{ $value }}" {{ old('role', $user->role) == $value ? 'selected' : '' }}>{{ $label }}</option>
+                        <label for="role_id" class="form-label fw-semibold">User Role <span class="text-danger">*</span></label>
+                        <select class="form-select form-control-custom @error('role_id') is-invalid @enderror" id="role_id" name="role_id" required {{ auth()->id() == $user->id ? 'disabled' : '' }}>
+                            <option value="">Select Role</option>
+                            @foreach($roles as $role)
+                                <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                             @endforeach
                         </select>
                         @if(auth()->id() == $user->id)
-                            <input type="hidden" name="role" value="{{ $user->role }}">
+                            <input type="hidden" name="role_id" value="{{ $user->role_id }}">
                             <small class="text-muted">You cannot change your own role.</small>
                         @endif
-                        @error('role')
+                        @error('role_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

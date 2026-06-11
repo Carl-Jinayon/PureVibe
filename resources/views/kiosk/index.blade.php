@@ -231,6 +231,7 @@
             position: absolute;
             top: 8px;
             right: 8px;
+            z-index: 10;
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 0.75rem;
@@ -1299,7 +1300,7 @@
                 const imgSrc = product.image || null;
 
                 let imageHtml = imgSrc 
-                    ? '<img src="/storage/' + imgSrc + '" alt="' + product.name + '" loading="lazy">'
+                    ? '<img src="/storage/' + imgSrc + '" alt="" loading="lazy" onerror="this.outerHTML=\'<i class=\\\'bi bi-box\\\'></i>\'">'
                     : '<i class="bi bi-box"></i>';
 
                 return '<div class="product-card">' +
@@ -1407,7 +1408,7 @@
                             '<i class="bi bi-x-circle-fill fs-5"></i>' +
                         '</button>' +
                         '<div class="cart-item-img">' +
-                            (item.image ? '<img src="/storage/' + item.image + '" alt="' + item.name + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">' : '<i class="bi bi-box fs-3 text-muted"></i>') +
+                            (item.image ? '<img src="/storage/' + item.image + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.outerHTML=\'<i class=\\\'bi bi-box fs-3 text-muted\\\'></i>\'">' : '<i class="bi bi-box fs-3 text-muted"></i>') +
                         '</div>' +
                         '<div class="cart-item-details">' +
                             '<div class="cart-item-title">' + item.name + '</div>' +

@@ -54,7 +54,7 @@
                 </li>
                 <li class="list-group-item bg-transparent px-0 py-3">
                     <span class="text-muted d-flex align-items-center gap-2 mb-2"><i class="bi bi-geo-alt"></i> Address</span>
-                    <p class="mb-0 fw-semibold">{{ $supplier->address ?? 'No address provided.' }}</p>
+                    <p class="mb-0 fw-semibold text-wrap text-break">{{ $supplier->address ?? 'No address provided.' }}</p>
                 </li>
             </ul>
         </div>

@@ -28,34 +28,35 @@ Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
 // Admin routes (all require auth)
-Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'auditor.readonly'])->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/live-data', [DashboardController::class, 'liveData'])->name('dashboard.live-data');
 
     // DCIT 55A SQL Runner
-    Route::get('/sql-runner', [SqlRunnerController::class, 'index'])->name('sql-runner.index');
-    Route::post('/sql-runner/execute', [SqlRunnerController::class, 'execute'])->name('sql-runner.execute');
+    Route::get('/sql-runner', [SqlRunnerController::class, 'index'])->name('sql-runner.index')->middleware('role:admin');
+    Route::post('/sql-runner/execute', [SqlRunnerController::class, 'execute'])->name('sql-runner.execute')->middleware('role:admin');
     
     // Categories
-    Route::resource('categories', CategoryController::class);
+    Route::resource('categories', CategoryController::class)->middleware('role:admin,inventory_manager');
     
     // Suppliers
-    Route::resource('suppliers', SupplierController::class);
+    Route::resource('suppliers', SupplierController::class)->middleware('role:admin,inventory_manager');
     
     // Products
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->middleware('role:admin,inventory_manager');
     
-    // Inventory
-    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
-    Route::get('/inventory/movements', [InventoryController::class, 'movements'])->name('inventory.movements');
-    Route::get('/inventory/low-stock', [InventoryController::class, 'lowStock'])->name('inventory.low-stock');
-    Route::get('/inventory/adjust', [InventoryController::class, 'adjustForm'])->name('inventory.adjust-form');
-    Route::put('/inventory/adjust/{product}', [InventoryController::class, 'adjust'])->name('inventory.adjust');
-    
-    // Stock Entries
-    Route::resource('stock-entries', StockEntryController::class)->only(['index', 'create', 'store', 'show']);
-    Route::put('/stock-entries/{stock_entry}/approve', [StockEntryController::class, 'approve'])->name('stock-entries.approve');
-    Route::put('/stock-entries/{stock_entry}/reject', [StockEntryController::class, 'reject'])->name('stock-entries.reject');
+    // Inventory & Stock Entries (Admin & Inventory Manager only)
+    Route::middleware('role:admin,inventory_manager')->group(function () {
+        Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+        Route::get('/inventory/movements', [InventoryController::class, 'movements'])->name('inventory.movements');
+        Route::get('/inventory/low-stock', [InventoryController::class, 'lowStock'])->name('inventory.low-stock');
+        Route::get('/inventory/adjust', [InventoryController::class, 'adjustForm'])->name('inventory.adjust-form');
+        Route::put('/inventory/adjust/{product}', [InventoryController::class, 'adjust'])->name('inventory.adjust');
+        
+        Route::resource('stock-entries', StockEntryController::class)->only(['index', 'create', 'store', 'show']);
+        Route::put('/stock-entries/{stock_entry}/approve', [StockEntryController::class, 'approve'])->name('stock-entries.approve');
+        Route::put('/stock-entries/{stock_entry}/reject', [StockEntryController::class, 'reject'])->name('stock-entries.reject');
+    });
     
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -71,7 +72,7 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::resource('users', UserController::class)->middleware('role:admin');
     
     // Audit Logs
-    Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index')->middleware('role:admin,auditor');
     
     // Settings (admin only)
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index')->middleware('role:admin');
