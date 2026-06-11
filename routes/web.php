@@ -29,6 +29,7 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 // Admin routes (all require auth)
 Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/live-data', [DashboardController::class, 'liveData'])->name('dashboard.live-data');
     
     // Categories
     Route::resource('categories', CategoryController::class);

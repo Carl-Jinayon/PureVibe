@@ -600,9 +600,471 @@
         }
 
         .cart-toggle-mobile { display: none; }
+
+        /* =============================================
+           IDLE / WELCOME SCREEN
+        ============================================= */
+        #idleScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            overflow: hidden;
+        }
+
+        #idleScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Animated background particles */
+        .idle-bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            filter: blur(80px);
+            animation: orbFloat 8s ease-in-out infinite alternate;
+        }
+        .idle-bg-orb:nth-child(1) {
+            width: 500px; height: 500px;
+            background: var(--primary);
+            top: -100px; left: -100px;
+            animation-delay: 0s;
+        }
+        .idle-bg-orb:nth-child(2) {
+            width: 400px; height: 400px;
+            background: var(--accent);
+            bottom: -80px; right: -80px;
+            animation-delay: -3s;
+        }
+        .idle-bg-orb:nth-child(3) {
+            width: 300px; height: 300px;
+            background: #06b6d4;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -5s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.15) translate(20px, -20px); }
+        }
+
+        .idle-content {
+            position: relative;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            user-select: none;
+        }
+
+        .idle-logo-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            box-shadow: 0 0 60px rgba(79, 70, 229, 0.6), 0 0 120px rgba(124, 58, 237, 0.3);
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 60px rgba(79, 70, 229, 0.6), 0 0 120px rgba(124, 58, 237, 0.3); transform: scale(1); }
+            50% { box-shadow: 0 0 80px rgba(79, 70, 229, 0.9), 0 0 160px rgba(124, 58, 237, 0.5); transform: scale(1.05); }
+        }
+
+        .idle-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .idle-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        .idle-tap-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 1.1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            animation: tapBounce 2.5s ease-in-out infinite;
+        }
+
+        @keyframes tapBounce {
+            0%, 100% { transform: translateY(0); box-shadow: 0 4px 30px rgba(0,0,0,0.2); }
+            50% { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+        }
+
+        .idle-tap-cta i {
+            font-size: 1.5rem;
+            animation: fingerTap 1.5s ease-in-out infinite;
+        }
+
+        @keyframes fingerTap {
+            0%, 60%, 100% { transform: scale(1); }
+            30% { transform: scale(0.8); }
+        }
+
+        .idle-clock {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            text-align: right;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .idle-clock-time {
+            font-size: 2rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+        }
+
+        .idle-clock-date {
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            opacity: 0.7;
+        }
+
+        .idle-footer {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 0; right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.8rem;
+        }
+
+        /* =============================================
+           THANK YOU / COMPLETION SCREEN
+        ============================================= */
+        #completionScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            overflow: hidden;
+        }
+
+        #completionScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .completion-orb {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.12;
+            filter: blur(70px);
+        }
+        .completion-orb:nth-child(1) {
+            width: 600px; height: 600px;
+            background: #10b981;
+            top: -150px; right: -150px;
+        }
+        .completion-orb:nth-child(2) {
+            width: 400px; height: 400px;
+            background: #6366f1;
+            bottom: -100px; left: -100px;
+        }
+
+        .completion-content {
+            position: relative;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .completion-check {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+            animation: successPing 1.5s ease-out 1;
+        }
+
+        @keyframes successPing {
+            0% { transform: scale(0.5); opacity: 0; box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
+            50% { transform: scale(1.1); }
+            70% { box-shadow: 0 0 0 40px rgba(16,185,129,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16,185,129,0); opacity: 1; }
+        }
+
+        .completion-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .completion-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 2rem;
+        }
+
+        /* Countdown Timer Ring */
+        .timer-ring-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 2rem;
+        }
+
+        .timer-ring-svg {
+            transform: rotate(-90deg);
+            width: 140px;
+            height: 140px;
+        }
+
+        .timer-ring-track {
+            fill: none;
+            stroke: rgba(255,255,255,0.1);
+            stroke-width: 8;
+        }
+
+        .timer-ring-progress {
+            fill: none;
+            stroke: url(#timerGradient);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .timer-ring-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .timer-count {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-completion-print {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-completion-print:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-completion-new {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-completion-new:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
+        }
+
+        .completion-receipt-preview {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.8);
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .completion-receipt-preview::-webkit-scrollbar {
+            width: 4px;
+        }
+        .completion-receipt-preview::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- ===== IDLE / WELCOME SCREEN ===== -->
+    <div id="idleScreen" onclick="dismissIdleScreen()">
+        <!-- Background orbs -->
+        <div class="idle-bg-orb"></div>
+        <div class="idle-bg-orb"></div>
+        <div class="idle-bg-orb"></div>
+
+        <!-- Clock -->
+        <div class="idle-clock">
+            <div class="idle-clock-time" id="idleClockTime">00:00</div>
+            <div class="idle-clock-date" id="idleClockDate"></div>
+        </div>
+
+        <!-- Main content -->
+        <div class="idle-content">
+            <div class="idle-logo-ring">
+                <i class="bi bi-shop"></i>
+            </div>
+            <div class="idle-title">PureVibe</div>
+            <div id="idleSubtitle" class="idle-subtitle">Self-Checkout Kiosk — Fast &amp; Easy</div>
+            <div class="idle-tap-cta">
+                <i id="idleCtaIcon" class="bi bi-hand-index-thumb"></i>
+                <span id="idleCtaText">Tap anywhere to start your order</span>
+            </div>
+            <!-- Shown only when resuming an order -->
+            <div id="idleCartBadge" style="display:none; margin-top:1.25rem;">
+                <span style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:50px; padding:0.5rem 1.25rem; font-size:0.9rem; color:rgba(255,255,255,0.85);">
+                    <i class="bi bi-cart3 me-1"></i>
+                    <span id="idleCartCount"></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="idle-footer">
+            {{ $settings['store_name'] ?? 'PureVibe' }} &mdash; Powered by Self-Checkout
+        </div>
+    </div>
+
+    <!-- ===== THANK YOU / COMPLETION SCREEN ===== -->
+    <div id="completionScreen" class="hidden">
+        <!-- Background orbs -->
+        <div class="completion-orb"></div>
+        <div class="completion-orb"></div>
+
+        <div class="completion-content">
+            <!-- Animated check -->
+            <div class="completion-check" id="completionCheck">
+                <i class="bi bi-check-lg"></i>
+            </div>
+
+            <div class="completion-title">Thank You!</div>
+            <div class="completion-subtitle">Your order has been confirmed &amp; is being prepared.</div>
+
+            <!-- Receipt mini preview -->
+            <div class="completion-receipt-preview" id="completionReceiptText">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Countdown ring -->
+            <div class="timer-ring-wrapper">
+                <svg class="timer-ring-svg" viewBox="0 0 140 140">
+                    <defs>
+                        <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#10b981"/>
+                            <stop offset="100%" stop-color="#6366f1"/>
+                        </linearGradient>
+                    </defs>
+                    <circle class="timer-ring-track" cx="70" cy="70" r="58"/>
+                    <circle class="timer-ring-progress" id="timerRingProgress" cx="70" cy="70" r="58"
+                        stroke-dasharray="364.425"
+                        stroke-dashoffset="0"/>
+                </svg>
+                <div class="timer-ring-center">
+                    <div class="timer-count" id="timerCount">30</div>
+                    <div class="timer-label">seconds</div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="completion-actions">
+                <button class="btn-completion-print" id="btnCompletionPrint" onclick="completionPrintReceipt()">
+                    <i class="bi bi-printer"></i> Print Receipt
+                </button>
+                <button class="btn-completion-new" onclick="resetToIdle()">
+                    <i class="bi bi-arrow-repeat"></i> Next Customer
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div class="kiosk-container">
         <!-- Main Product Section -->
@@ -1049,7 +1511,8 @@
                             clearInterval(pollingInterval);
                             pollingInterval = null;
                             waitingModal.hide();
-                            setTimeout(() => showReceipt(txn), 400);
+                            // Show the thank-you / completion screen instead of receipt modal directly
+                            setTimeout(() => showCompletionScreen(txn), 400);
                         }
                     } catch (e) {
                         // Silent fail — keep polling
@@ -1170,6 +1633,142 @@
             fetchProducts();
         }
 
+        // =============================================
+        //  IDLE SCREEN LOGIC
+        // =============================================
+        function dismissIdleScreen() {
+            document.getElementById('idleScreen').classList.add('hidden');
+        }
+
+        function showIdleScreen() {
+            const idle = document.getElementById('idleScreen');
+            idle.classList.remove('hidden');
+        }
+
+        // Sync idle clock with main clock
+        function updateIdleClock() {
+            const now = new Date();
+            const idleTime = document.getElementById('idleClockTime');
+            const idleDate = document.getElementById('idleClockDate');
+            if (idleTime) idleTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (idleDate) idleDate.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        setInterval(updateIdleClock, 1000);
+        updateIdleClock();
+
+        // =============================================
+        //  COMPLETION / THANK YOU SCREEN LOGIC
+        // =============================================
+        const COMPLETION_TIMER_SECONDS = 30;
+        let completionTimerInterval = null;
+        let completionTimerRemaining = COMPLETION_TIMER_SECONDS;
+        let completionTxnData = null;
+
+        const RING_CIRCUMFERENCE = 364.425; // 2 * PI * 58
+
+        function showCompletionScreen(txn) {
+            completionTxnData = txn;
+
+            // Populate mini receipt preview
+            const taxRate = {{ ($settings['default_tax_rate'] ?? 12) / 100 }};
+            const taxLabel = '{{ $settings["tax_name"] ?? "VAT" }} ({{ $settings["default_tax_rate"] ?? 12 }}%)';
+            const storeName = '{{ $settings["store_name"] ?? "PureVibe" }}';
+            const footerMsg = '{{ $settings["receipt_footer"] ?? "Thank you for shopping with us!" }}';
+
+            const subtotal = txn.subtotal || 0;
+            const tax = txn.tax_amount || txn.tax || (subtotal * taxRate);
+            const total = txn.total_amount || txn.total || (subtotal + tax);
+
+            let receiptLines = '';
+            receiptLines += '<div style="text-align:center;border-bottom:1px dashed rgba(255,255,255,0.2);padding-bottom:0.75rem;margin-bottom:0.75rem;">';
+            receiptLines += '<strong style="font-size:1rem;">' + storeName + '</strong><br>';
+            receiptLines += '<span style="opacity:0.6;font-size:0.75rem;">Txn: ' + (txn.transaction_number || txn.reference_number || '—') + '</span><br>';
+            receiptLines += '<span style="opacity:0.5;font-size:0.7rem;">' + new Date(txn.created_at || new Date()).toLocaleString() + '</span>';
+            receiptLines += '</div>';
+
+            (txn.items || cart).forEach(item => {
+                const lineTotal = item.subtotal || (item.price * item.quantity);
+                receiptLines += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;">';
+                receiptLines += '<span>' + item.quantity + 'x ' + item.name + '</span>';
+                receiptLines += '<span>' + formatCurrency(lineTotal) + '</span>';
+                receiptLines += '</div>';
+            });
+
+            receiptLines += '<div style="border-top:1px dashed rgba(255,255,255,0.2);margin-top:0.75rem;padding-top:0.75rem;">';
+            receiptLines += '<div style="display:flex;justify-content:space-between;"><span>Subtotal</span><span>' + formatCurrency(subtotal) + '</span></div>';
+            receiptLines += '<div style="display:flex;justify-content:space-between;"><span>' + taxLabel + '</span><span>' + formatCurrency(tax) + '</span></div>';
+            receiptLines += '<div style="display:flex;justify-content:space-between;font-weight:bold;font-size:1.1rem;margin-top:6px;"><span>TOTAL</span><span>' + formatCurrency(total) + '</span></div>';
+            receiptLines += '</div>';
+            receiptLines += '<div style="text-align:center;margin-top:0.75rem;opacity:0.5;font-size:0.75rem;">' + footerMsg + '</div>';
+
+            document.getElementById('completionReceiptText').innerHTML = receiptLines;
+
+            // Reset and start timer
+            completionTimerRemaining = COMPLETION_TIMER_SECONDS;
+            document.getElementById('timerCount').textContent = completionTimerRemaining;
+            document.getElementById('timerRingProgress').style.strokeDashoffset = '0';
+
+            // Re-animate the check icon
+            const checkEl = document.getElementById('completionCheck');
+            checkEl.style.animation = 'none';
+            checkEl.offsetHeight; // reflow
+            checkEl.style.animation = '';
+
+            // Show completion screen
+            document.getElementById('completionScreen').classList.remove('hidden');
+
+            // Start countdown
+            clearInterval(completionTimerInterval);
+            completionTimerInterval = setInterval(() => {
+                completionTimerRemaining--;
+                document.getElementById('timerCount').textContent = completionTimerRemaining;
+
+                // Update ring: dashoffset goes from 0 → CIRCUMFERENCE
+                const progress = completionTimerRemaining / COMPLETION_TIMER_SECONDS;
+                const offset = RING_CIRCUMFERENCE * (1 - progress);
+                document.getElementById('timerRingProgress').style.strokeDashoffset = offset;
+
+                if (completionTimerRemaining <= 0) {
+                    clearInterval(completionTimerInterval);
+                    resetToIdle();
+                }
+            }, 1000);
+        }
+
+        function completionPrintReceipt() {
+            if (!completionTxnData) return;
+            // Populate the hidden receipt modal content for printing
+            showReceipt(completionTxnData);
+            // A brief delay so receipt modal content is populated, then trigger print silently
+            setTimeout(() => {
+                printReceipt();
+            }, 200);
+        }
+
+        function resetToIdle() {
+            // Stop timer
+            clearInterval(completionTimerInterval);
+            completionTimerInterval = null;
+
+            // Hide completion screen
+            document.getElementById('completionScreen').classList.add('hidden');
+
+            // Reset cart and UI
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+            }
+            cart = [];
+            renderCart();
+            receiptModal.hide();
+            checkoutBtn.innerHTML = '<span>Checkout</span><i class="bi bi-arrow-right-circle-fill"></i>';
+            checkoutBtn.disabled = true;
+            fetchProducts();
+
+            // Show idle screen
+            showIdleScreen();
+        }
+
         // --- Event Listeners ---
 
         // Category Filter
@@ -1198,6 +1797,77 @@
         });
 
         clearCartBtn.addEventListener('click', clearCart);
+
+        // =============================================
+        //  INACTIVITY TIMEOUT
+        // =============================================
+        const INACTIVITY_TIMEOUT_MS = 60000; // 60 seconds
+        let inactivityTimer = null;
+
+        function isBlockingScreenActive() {
+            // Don't trigger idle if admin confirmation or completion screen is up
+            const completionVisible = !document.getElementById('completionScreen').classList.contains('hidden');
+            const waitingVisible   = document.getElementById('waitingModal').classList.contains('show');
+            const receiptVisible   = document.getElementById('receiptModal').classList.contains('show');
+            const idleVisible      = !document.getElementById('idleScreen').classList.contains('hidden');
+            return completionVisible || waitingVisible || receiptVisible || idleVisible;
+        }
+
+        function updateIdleScreenForCart() {
+            const ctaText    = document.getElementById('idleCtaText');
+            const ctaIcon    = document.getElementById('idleCtaIcon');
+            const subtitle   = document.getElementById('idleSubtitle');
+            const cartBadge  = document.getElementById('idleCartBadge');
+            const cartCount  = document.getElementById('idleCartCount');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (totalItems > 0) {
+                // Resuming an in-progress order
+                subtitle.textContent  = 'Your session is paused.';
+                ctaIcon.className     = 'bi bi-play-circle';
+                ctaText.textContent   = 'Tap anywhere to continue your order';
+                cartBadge.style.display = 'block';
+                cartCount.textContent = totalItems + ' item' + (totalItems !== 1 ? 's' : '') + ' in your cart';
+            } else {
+                // Fresh welcome screen
+                subtitle.textContent  = 'Self-Checkout Kiosk — Fast & Easy';
+                ctaIcon.className     = 'bi bi-hand-index-thumb';
+                ctaText.textContent   = 'Tap anywhere to start your order';
+                cartBadge.style.display = 'none';
+            }
+        }
+
+        function triggerIdleFromInactivity() {
+            if (isBlockingScreenActive()) return;
+            updateIdleScreenForCart();
+            showIdleScreen();
+        }
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            // Only run the timer when the idle screen is NOT already showing
+            if (!isBlockingScreenActive()) {
+                inactivityTimer = setTimeout(triggerIdleFromInactivity, INACTIVITY_TIMEOUT_MS);
+            }
+        }
+
+        // Listen for any user activity to reset the timer
+        const ACTIVITY_EVENTS = ['mousemove', 'mousedown', 'touchstart', 'touchmove', 'keydown', 'scroll', 'click'];
+        ACTIVITY_EVENTS.forEach(evt => {
+            document.addEventListener(evt, resetInactivityTimer, { passive: true });
+        });
+
+        // Override dismissIdleScreen to also restart the inactivity timer
+        const _originalDismissIdleScreen = dismissIdleScreen;
+        dismissIdleScreen = function() {
+            _originalDismissIdleScreen();
+            resetInactivityTimer();
+        };
+
+        // Kick off timer on page load (after products load, the idle screen covers it anyway initially)
+        // Start counting as soon as user dismisses the initial idle screen
+        resetInactivityTimer();
 
         // --- Initialize ---
         fetchProducts();
