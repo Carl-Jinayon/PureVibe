@@ -151,4 +151,102 @@
 </div>
 @endif
 
+@if(isset($isModification) && $isModification)
+<div class="row mb-4">
+    <div class="col-md-6 mb-3 mb-md-0">
+        <div class="glass-card p-0 h-100 border-danger">
+            <div class="card-header-gradient d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                <h5 class="mb-0 text-white"><i class="bi bi-hourglass-top me-2"></i> Before Modification</h5>
+                @if(isset($beforeResults))
+                <span class="badge bg-light text-danger">{{ count($beforeResults) }} Rows</span>
+                @endif
+            </div>
+            
+            @if(isset($beforeResults) && count($beforeResults) > 0)
+            <div class="results-container" style="max-height: 300px;">
+                <table class="table table-hover table-bordered table-results mb-0">
+                    <thead>
+                        <tr>
+                            @foreach($modHeaders as $header)
+                                <th>{{ $header }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($beforeResults as $row)
+                            <tr class="table-danger">
+                                @foreach($modHeaders as $header)
+                                    <td>
+                                        @if($row[$header] === null)
+                                            <span class="text-danger font-monospace"><i>NULL</i></span>
+                                        @else
+                                            {{ $row[$header] }}
+                                        @endif
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @else
+            <div class="p-4 text-center text-muted">
+                <p class="mb-0">Could not extract before state or no rows matched WHERE clause.</p>
+            </div>
+            @endif
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="glass-card p-0 h-100 border-success">
+            <div class="card-header-gradient d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #10b981, #059669);">
+                <h5 class="mb-0 text-white"><i class="bi bi-hourglass-bottom me-2"></i> After Modification</h5>
+                @if(isset($afterResults) && !$isDelete)
+                <span class="badge bg-light text-success">{{ count($afterResults) }} Rows</span>
+                @endif
+            </div>
+            
+            @if($isDelete)
+            <div class="p-5 text-center text-muted h-100 d-flex flex-column justify-content-center">
+                <i class="bi bi-trash fs-1 text-danger mb-2"></i>
+                <h5 class="text-danger">Row(s) Deleted</h5>
+                <p class="mb-0">Data has been successfully removed.</p>
+            </div>
+            @elseif(isset($afterResults) && count($afterResults) > 0)
+            <div class="results-container" style="max-height: 300px;">
+                <table class="table table-hover table-bordered table-results mb-0">
+                    <thead>
+                        <tr>
+                            @foreach($modHeaders as $header)
+                                <th>{{ $header }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($afterResults as $row)
+                            <tr class="table-success">
+                                @foreach($modHeaders as $header)
+                                    <td>
+                                        @if($row[$header] === null)
+                                            <span class="text-danger font-monospace"><i>NULL</i></span>
+                                        @else
+                                            {{ $row[$header] }}
+                                        @endif
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @else
+            <div class="p-4 text-center text-muted">
+                <p class="mb-0">No data to display or query did not result in an updated row.</p>
+            </div>
+            @endif
+        </div>
+    </div>
+</div>
+@endif
+
 @endsection

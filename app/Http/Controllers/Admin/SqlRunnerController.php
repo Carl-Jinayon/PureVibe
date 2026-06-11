@@ -50,12 +50,58 @@ class SqlRunnerController extends Controller
                     'successMsg' => 'Query executed successfully. Returned ' . count($resultsArray) . ' rows.'
                 ]);
             } else {
-                // Handle UPDATE, DELETE, INSERT (Execute statement without returning table)
-                DB::statement($query);
+                // Handle UPDATE, DELETE
+                $isUpdate = preg_match('/^\s*update\s+([a-zA-Z0-9_]+)\s+set/i', $query, $matchUpdate);
+                $isDelete = preg_match('/^\s*delete\s+from\s+([a-zA-Z0-9_]+)/i', $query, $matchDelete);
                 
+                $tableName = null;
+                $whereClause = '';
+                
+                if ($isUpdate && isset($matchUpdate[1])) {
+                    $tableName = str_replace(['`', "'", '"'], '', $matchUpdate[1]);
+                    if (preg_match('/where\s+(.*)$/i', $query, $whereMatch)) {
+                        $whereClause = $whereMatch[1];
+                    }
+                } else if ($isDelete && isset($matchDelete[1])) {
+                    $tableName = str_replace(['`', "'", '"'], '', $matchDelete[1]);
+                    if (preg_match('/where\s+(.*)$/i', $query, $whereMatch)) {
+                        $whereClause = $whereMatch[1];
+                    }
+                }
+
+                $beforeResults = [];
+                $afterResults = [];
+                $modHeaders = [];
+
+                if ($tableName && $whereClause) {
+                    try {
+                        $selectQuery = "SELECT * FROM {$tableName} WHERE {$whereClause}";
+                        $beforeData = DB::select($selectQuery);
+                        $beforeResults = array_map(function ($item) { return (array) $item; }, $beforeData);
+                        if (count($beforeResults) > 0) {
+                            $modHeaders = array_keys($beforeResults[0]);
+                        }
+                    } catch (\Exception $e) {}
+                }
+
+                $affectedRows = DB::update($query);
+                
+                if ($tableName && $whereClause && $isUpdate) {
+                    try {
+                        $selectQuery = "SELECT * FROM {$tableName} WHERE {$whereClause}";
+                        $afterData = DB::select($selectQuery);
+                        $afterResults = array_map(function ($item) { return (array) $item; }, $afterData);
+                    } catch (\Exception $e) {}
+                }
+
                 return view('admin.sql-runner', [
                     'query' => $query,
-                    'successMsg' => 'Statement executed successfully. Data was modified.'
+                    'successMsg' => "Statement executed successfully. Affected {$affectedRows} row(s).",
+                    'isModification' => true,
+                    'isDelete' => $isDelete,
+                    'beforeResults' => $beforeResults,
+                    'afterResults' => $afterResults,
+                    'modHeaders' => $modHeaders
                 ]);
             }
 
